@@ -13,13 +13,13 @@
       <div>
         <!-- <h4>OwnerName : {{ showgetdata.owner_name }}</h4>
         <h5>TemplateName : {{ showgetdata.template_name }}</h5>
-        <h6>CodeName : {{ showgetdata.code_name }}</h6> -->
-        <hr />
+        <h6>CodeName : {{ showgetdata.code_name }}</h6>
+        <hr /> -->
         <!-- {{ getterallqrcode }} -->
 
         <div class="grid lg:grid-cols-3 grid-cols-1 gap-5 p-2">
           <!-- History -->
-          <div class="bg-white shadow sm:rounded-lg oldinfo">
+          <!-- <div class="bg-white shadow sm:rounded-lg oldinfo">
             <div class="px-4 py-5 sm:px-6">
               <h3 class="text-lg leading-6 font-medium text-gray-900">
                 Old Information
@@ -48,61 +48,85 @@
                   </div>
 
                   <div class="sm:col-span-1">
-                    <dt class="text-sm font-medium text-gray-500">cpu :</dt>
+                    <dt class="text-sm font-medium text-gray-500">
+                      ProductCode :
+                    </dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.HistoryInfo.cpu }}
-                    </dd>
-                  </div>
-                  <div class="sm:col-span-1">
-                    <dt class="text-sm font-medium text-gray-500">ram :</dt>
-                    <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.HistoryInfo.ram }}
-                    </dd>
-                  </div>
-                  <div class="sm:col-span-1">
-                    <dt class="text-sm font-medium text-gray-500">case :</dt>
-                    <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.HistoryInfo.case }}
+                      {{ item.HistoryInfo.ProductCode }}
                     </dd>
                   </div>
                   <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">
-                      hard_disk :
+                      ProductName :
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.HistoryInfo.hard_disk }}
+                      {{ item.HistoryInfo.ProductName }}
                     </dd>
                   </div>
                   <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">
-                      Main Boar :
+                      ProductType :
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.HistoryInfo.main_boar }}
+                      {{ item.HistoryInfo.ProductType }}
                     </dd>
                   </div>
                   <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">
-                      Graphic Card :
+                      Department :
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.HistoryInfo.graphic_card }}
+                      {{ item.HistoryInfo.Department }}
+                    </dd>
+                  </div>
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">
+                      EmployeeID :
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                      {{ item.HistoryInfo.EmployeeID }}
+                    </dd>
+                  </div>
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">
+                      ProductUser :
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                      {{ item.HistoryInfo.ProductUser }}
                     </dd>
                   </div>
                 </dl>
               </div>
             </div>
-          </div>
+          </div> -->
+
           <!-- Information -->
           <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div class="px-4 py-5 sm:px-6">
-              <h3 class="text-lg leading-6 font-medium text-gray-900">
+            <div class="px-4 py-5 sm:px-6 grid grid-cols-2 gap-x-3 gap-y-3">
+              <h3 class="text-lg font-medium text-gray-900">
                 Information
               </h3>
+              <div class="flex">
+                <vs-button
+                  color="messenger"
+                  @click="toggleModalinsertData()"
+                >
+                  Insert
+                </vs-button>
+
+                <div>
+                  <vs-button
+                    color="medium"
+                    @click="toggleModalUpdateData()"
+                  >
+                    Update
+                  </vs-button>
+                </div>
+              </div>
             </div>
 
             <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-              <dl class="grid grid-cols-1 gap-x-3 gap-y-3 sm:grid-cols-2">
+              <dl class="grid grid-cols-2 gap-x-3 gap-y-3 sm:grid-cols-2">
                 <div
                   class="sm:col-span-1"
                   v-for="(item, index) in data_info"
@@ -116,7 +140,7 @@
           </div>
 
           <!-- Operator -->
-          <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <!-- <div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <div class="px-4 py-5 sm:px-6">
               <h3 class="text-lg leading-6 font-medium text-gray-900">
                 Operator
@@ -200,7 +224,7 @@
                 </dl>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -210,20 +234,26 @@
 <script >
 export default {
   // layout: "admin",
-  middleware: "isAuth",
+  // middleware: "isAuth",
   data: () => ({
     getterallqrcode: [],
     insertdata: {},
     showModal: false,
 
     data_info: {
-      case: "",
-      power_supply: "",
-      main_boar: "",
-      cpu: "",
-      ram: "",
-      graphic_card: "",
-      hard_disk: "",
+      ProductCode: "",
+      ProductName: "",
+      ProductType: "",
+      Department: " ",
+      EmployeeID: "",
+      ProductUser: "",
+      ProductDetails: "",
+      SerialNumber: "",
+      Note: "",
+      ProductInsurance: "",
+      PurchaseDate: "",
+      StartUsingTheProduct: "",
+      EndUsingTheProduct: "",
     },
     history_info: [],
 
@@ -248,20 +278,26 @@ export default {
       this.insertdata = JSON.parse(JSON.stringify(data));
 
       this.data_info = {
-        cpu: this.insertdata.info.cpu,
-        ram: this.insertdata.info.ram,
-        case: this.insertdata.info.case,
-        hard_disk: this.insertdata.info.hard_disk,
-        main_boar: this.insertdata.info.main_boar,
-        graphic_card: this.insertdata.info.graphic_card,
-        power_supply: this.insertdata.info.power_supply,
+        ProductCode: this.insertdata.info.ProductCode,
+        ProductName: this.insertdata.info.ProductName,
+        ProductType: this.insertdata.info.ProductType,
+        Department: this.insertdata.info.Department,
+        EmployeeID: this.insertdata.info.EmployeeID,
+        ProductUser: this.insertdata.info.ProductUser,
+        ProductDetails: this.insertdata.info.ProductDetails,
+        SerialNumber: this.insertdata.info.SerialNumber,
+        Note: this.insertdata.info.Note,
+        ProductInsurance: this.insertdata.info.ProductInsurance,
+        PurchaseDate: this.insertdata.info.PurchaseDate,
+        StartUsingTheProduct: this.insertdata.info.StartUsingTheProduct,
+        EndUsingTheProduct: this.insertdata.info.EndUsingTheProduct,
       };
       this.history_info = this.insertdata.history_info;
       this.operator = this.insertdata.ops;
     },
   },
   async created() {
-    await this.getqrcodelist();
+    // await this.getqrcodelist();
     await this.viewdataqrcode();
   },
 
@@ -271,14 +307,12 @@ export default {
       this.$router.go("/login");
     },
 
-    async getqrcodelist() {
-      await this.$store.dispatch("generate_qr/getAllQRCodefromApi");
-    },
+    // async getqrcodelist() {
+    //   await this.$store.dispatch("generate_qr/getAllQRCodefromApi");
+    // },
 
     async viewdataqrcode() {
-      await this.$store.dispatch(
-        "generate_qr/getDateQrById",
-      );
+      await this.$store.dispatch("generate_qr/getDateQrById");
     },
   },
 };

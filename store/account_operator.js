@@ -3,7 +3,8 @@ const accessToken = localStorage.getItem('accessToken')
 export const state = () => ({
     users: [],
     userops: {},
-    subowner: []
+    subowner: [],
+    userid: ''
 })
 
 export const mutations = {
@@ -28,6 +29,10 @@ export const mutations = {
     SET_ERROR(state, payload) {
         state.error.push(payload)
     },
+
+    SET_UID(state, data) {
+        state.userid = data
+    }
 }
 export const actions = {
     getAccountOperator(state, payload) {
@@ -39,6 +44,8 @@ export const actions = {
     },
 
     getAccountOps(state, payload) {
+        console.log("LineId", payload);
+        state.commit("SET_UID", payload)
         this.$axios.$get(`/api/ops/getAccount/${payload}`).then(res => {
             if (res !== "") {
                 this.$router.push("/");
@@ -80,4 +87,5 @@ export const actions = {
 export const getters = {
     gettersOperator: (state) => state.users,
     gettersSubOwner: (state) => state.subowner,
+    gettersUId: (state) => state.userid,
 }

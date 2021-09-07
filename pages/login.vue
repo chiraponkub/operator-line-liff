@@ -72,7 +72,8 @@
 <script>
 import "material-icons/iconfont/material-icons.css";
 export default {
-  middleware: "unAuth",
+  // middleware: "unAuth",
+  // layout: "default",
   data() {
     return {
       user: {
@@ -97,6 +98,9 @@ export default {
     isAccessops() {
       return this.$store.getters["login/gettersIsAccessOps"];
     },
+    getUid() {
+      return this.$store.getters["account_operator/gettersUId"];
+    },
   },
   watch: {
     isAccess(data) {
@@ -119,7 +123,11 @@ export default {
       if (!sus) {
         // alert("Username or password Incorrect");
       }
-      await this.$store.dispatch("login/loginOperator", this.user, this.userId);
+      await this.$store.dispatch("login/loginOperator", {
+        username: this.user.username,
+        password: this.user.password,
+        lineid: this.getUid,
+      });
       this.$router.push("/");
     },
   },

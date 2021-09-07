@@ -599,7 +599,7 @@
 
 <script>
 export default {
-  middleware: "isAuth",
+  // middleware: "isAuth",
   data() {
     return {
       isProfileDropdownOpen: false,

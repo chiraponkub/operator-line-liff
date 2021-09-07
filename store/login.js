@@ -4,7 +4,8 @@ export const state = () => ({
     username: {},
     access_token: "",
     is_access: '',
-    is_accessops: ''
+    is_accessops: '',
+    userid: ''
 })
 
 export const mutations = {
@@ -18,6 +19,9 @@ export const mutations = {
 
     SET_TOKEN(state, data) {
         state.access_token = data
+    },
+    SET_UID(state, data) {
+        state.userid = data
     }
 }
 
@@ -61,7 +65,7 @@ export const actions = {
         await this.$axios.$post("api/ops/login", {
                 username: payload.username,
                 password: payload.password,
-                uid: payload.datauserid
+                uid: payload.lineid
             }, )
             .then(res => {
                 if (res) {

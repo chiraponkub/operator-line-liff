@@ -43,18 +43,18 @@ export const actions = {
             state.commit("GET_TEMPLATE", res)
         })
     },
-    getAllQRCodefromApi(state) {
-        this.$axios.$get('/owner/getQrCode').then(res => {
-            // console.log("getAllQRCodefromApi", res);
-            state.commit("GET_QRCODELIST", res)
-        }).catch(error => {
-            console.log(error);
-            console.log("Incorrect information");
-        })
-    },
+    // getAllQRCodefromApi(state) {
+    //     this.$axios.$get('/owner/getQrCode').then(res => {
+    //         // console.log("getAllQRCodefromApi", res);
+    //         state.commit("GET_QRCODELIST", res)
+    //     }).catch(error => {
+    //         console.log(error);
+    //         console.log("Incorrect information");
+    //     })
+    // },
 
     getDateQrById(state, payload) {
-        this.$axios.$get(`api/qr-api/getDataQrCodeJson/b70e40c2-e548-4924-88b6-f5210a73134c`).then(res => {
+        this.$axios.$get(`api/qr-api/getDataQrCodeJson/fdac031f-68ba-4936-b7d0-ac5104ce9c10`).then(res => {
             state.commit("GETDATAQRCODEBYID", res)
         }).catch(error => {
             console.log(error);
