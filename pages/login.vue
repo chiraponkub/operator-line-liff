@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen container_bg2">
     <div class="h-full flex justify-center items-center">
-      <!-- Login Form -->
+      <!-- Login Fom -->
       <div class="box_login shadow border rounded-lg bg-white">
         <div class="flex justify-center py-8">
           <h1 class="heading-primary sm:w-1/2">Login</h1>
@@ -112,7 +112,7 @@ export default {
   },
 
   created() {},
-  
+
   methods: {
     async login() {
       const sus = await this.$refs.form.validate();
