@@ -1,4 +1,4 @@
-const accessToken = localStorage.getItem('accessToken')
+// const accessToken = localStorage.getItem('accessToken')
 
 export const state = () => ({
     templates: [],
@@ -25,7 +25,7 @@ export const mutations = {
         }
     },
     GETDATAQRCODEBYID(state, payload) {
-        console.log("GETDATAQRCODEBYID", payload);
+        // console.log("GETDATAQRCODEBYID", payload);
         state.databyid = payload
     },
 

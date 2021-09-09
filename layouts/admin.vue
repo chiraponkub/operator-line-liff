@@ -642,7 +642,7 @@ export default {
       this.isProfileDropdownOpen = false;
     },
     logout() {
-      localStorage.clear();
+      // localStorage.clear();
       this.$router.go("/login");
     },
     changePassword() {

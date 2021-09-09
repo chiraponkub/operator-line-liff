@@ -1,4 +1,4 @@
-const accessToken = localStorage.getItem('accessToken')
+// const accessToken = localStorage.getItem('accessToken')
 
 export const state = () => ({
     users: [],
@@ -48,12 +48,14 @@ export const actions = {
         state.commit("SET_UID", payload)
         this.$axios.$get(`/api/ops/getAccount/${payload}`).then(res => {
             if (res !== "") {
-                this.$router.push("/");
+                this.$router.push("/"); /// Viewver
             } else {
                 this.$router.push("/login");
-                liff.closeWindow()
             }
             state.commit("SET_ACCOUNTOPS", res)
+        }).catch((error) => {
+            console.log("ERROR", error);
+            liff.closeWindow()
         })
     },
 

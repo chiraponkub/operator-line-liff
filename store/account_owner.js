@@ -1,4 +1,4 @@
-const accessToken = localStorage.getItem('accessToken')
+// const accessToken = localStorage.getItem('accessToken')
 
 export const state = () => ({
     users: {},

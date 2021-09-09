@@ -1,11 +1,10 @@
-const accessToken = localStorage.getItem('accessToken')
+// const accessToken = localStorage.getItem('accessToken')
 
 export const state = () => ({
     username: {},
     access_token: "",
     is_access: '',
     is_accessops: '',
-    userid: ''
 })
 
 export const mutations = {
@@ -20,9 +19,6 @@ export const mutations = {
     SET_TOKEN(state, data) {
         state.access_token = data
     },
-    SET_UID(state, data) {
-        state.userid = data
-    }
 }
 
 export const actions = {
@@ -34,7 +30,7 @@ export const actions = {
             .then(res => {
                 if (res) {
                     console.log("DATA", res);
-                    localStorage.setItem("accessToken", res.message)
+                    // localStorage.setItem("accessToken", res.message)
                     state.commit("SET_ACCESS", true)
                 }
             }).catch(error => {
@@ -43,7 +39,7 @@ export const actions = {
             })
     },
     setToken(state) {
-        const accessToken = localStorage.getItem('accessToken');
+        // const accessToken = localStorage.getItem('accessToken');
         state.commit('SET_TOKEN', accessToken)
     },
 
@@ -69,7 +65,7 @@ export const actions = {
             }, )
             .then(res => {
                 if (res) {
-                    localStorage.setItem("accessToken", res.message)
+                    // localStorage.setItem("accessToken", res.message)
                     state.commit("SET_ACCESSOPS", true)
                 }
             }).catch(error => {
@@ -78,7 +74,7 @@ export const actions = {
             })
     },
     setToken(state) {
-        const accessToken = localStorage.getItem('accessToken');
+        // const accessToken = localStorage.getItem('accessToken');
         state.commit('SET_TOKEN', accessToken)
     },
 
