@@ -31,7 +31,7 @@
 
         <div class="grid lg:grid-cols-3 grid-cols-1 gap-5 p-2">
           <!-- History -->
-          <!-- <div class="bg-white shadow sm:rounded-lg oldinfo">
+          <div class="bg-white shadow sm:rounded-lg oldinfo">
             <div class="px-4 py-5 sm:px-6">
               <h3 class="text-lg leading-6 font-medium text-gray-900">
                 Old Information
@@ -43,7 +43,7 @@
                 v-for="(item, index) in history_info"
                 :key="index"
               >
-                <dl class="grid grid-cols-1 gap-x-3 gap-y-3 sm:grid-cols-2">
+                <dl class="grid grid-cols-2 gap-x-3 gap-y-3 sm:grid-cols-2">
                   <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">
                       <b>UpdatedAt :</b>
@@ -99,6 +99,7 @@
                       {{ item.HistoryInfo.EmployeeID }}
                     </dd>
                   </div>
+
                   <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">
                       ProductUser :
@@ -107,10 +108,26 @@
                       {{ item.HistoryInfo.ProductUser }}
                     </dd>
                   </div>
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">
+                      ProductDetails :
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                      {{ item.HistoryInfo.ProductDetails }}
+                    </dd>
+                  </div>
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">
+                      SerialNumber :
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                      {{ item.HistoryInfo.SerialNumber }}
+                    </dd>
+                  </div>
                 </dl>
               </div>
             </div>
-          </div> -->
+          </div>
 
           <!-- Information -->
           <div class="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -173,6 +190,7 @@
                 :key="index"
               >
                 <dl class="grid grid-cols-1 gap-x-3 gap-y-3 sm:grid-cols-2">
+                  
                   <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">
                       <p>UpdatedAt :</p>
@@ -190,57 +208,30 @@
 
                   <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">
-                      <p>CPU :</p>
+                      <p>Text :</p>
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.Ops.cpu }} -> {{ data_info.cpu }}
+                      {{ item.Ops.text }}
                     </dd>
                   </div>
                   <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">
-                      <p>RAM :</p>
+                      <p>Type :</p>
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.Ops.ram }} -> {{ data_info.ram }}
+                      {{ item.Ops.type }}
                     </dd>
                   </div>
 
                   <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">
-                      <p>Case :</p>
+                      <p>Status :</p>
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.Ops.case }} -> {{ data_info.case }}
+                      {{ item.Ops.status_worksheet_1 }}
                     </dd>
                   </div>
 
-                  <div class="sm:col-span-1">
-                    <dt class="text-sm font-medium text-gray-500">
-                      <p>Hard Disk :</p>
-                    </dt>
-                    <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.Ops.hard_disk }} -> {{ data_info.hard_disk }}
-                    </dd>
-                  </div>
-
-                  <div class="sm:col-span-1">
-                    <dt class="text-sm font-medium text-gray-500">
-                      <p>Main Boar :</p>
-                    </dt>
-                    <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.Ops.main_boar }} -> {{ data_info.main_boar }}
-                    </dd>
-                  </div>
-
-                  <div class="sm:col-span-2">
-                    <dt class="text-sm font-medium text-gray-500">
-                      <p>Graphic Card :</p>
-                    </dt>
-                    <dd class="mt-1 text-sm text-gray-900">
-                      {{ item.Ops.graphic_card }} ->
-                      {{ data_info.graphic_card }}
-                    </dd>
-                  </div>
                 </dl>
               </div>
             </div>
@@ -252,12 +243,10 @@
 </template>
 
 <script >
-
 export default {
   // layout: "admin",
   // middleware: "isAuth",
   data: () => ({
-
     getterallqrcode: [],
     insertdata: {},
     showModal: false,
@@ -280,6 +269,15 @@ export default {
     history_info: [],
 
     operator: [],
+    ops: {
+      text: "",
+      type: "",
+      qr_code_id: "",
+      status_worksheet_1: {
+        status: "",
+        update_at: "",
+      },
+    },
   }),
 
   computed: {
@@ -296,7 +294,7 @@ export default {
       this.getterallqrcode = JSON.parse(JSON.stringify(data));
     },
     showgetdata(data) {
-      console.log("DAta", data);
+      // console.log("DATA", data);
       this.insertdata = JSON.parse(JSON.stringify(data));
 
       this.data_info = {
@@ -308,14 +306,12 @@ export default {
         ProductUser: this.insertdata.info.ProductUser,
         ProductDetails: this.insertdata.info.ProductDetails,
         SerialNumber: this.insertdata.info.SerialNumber,
-        Note: this.insertdata.info.Note,
-        ProductInsurance: this.insertdata.info.ProductInsurance,
-        PurchaseDate: this.insertdata.info.PurchaseDate,
-        StartUsingTheProduct: this.insertdata.info.StartUsingTheProduct,
-        EndUsingTheProduct: this.insertdata.info.EndUsingTheProduct,
+        // Note: this.insertdata.info.Note,
       };
+      
       this.history_info = this.insertdata.history_info;
       this.operator = this.insertdata.ops;
+      // console.log("this.data_info", this.operator);
     },
   },
   async created() {
@@ -369,10 +365,9 @@ export default {
     },
 
     async viewdataqrcode() {
-      await this.$store.dispatch("generate_qr/getDateQrById");
+      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
     },
   },
-
 };
 </script>
 

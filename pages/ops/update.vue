@@ -51,7 +51,7 @@
         <!-- computer -->
         <!-- v-if="dataQrById.template_name === 'computer'" -->
         <div class="p-3 items-center">
-          <!-- Power Case -->
+          <!-- ProductCode -->
           <ValidationProvider
             v-slot="{ errors }"
             rules="required"
@@ -62,7 +62,7 @@
                 class="flex justify-center p-2 mx-2"
                 label-placeholder="ProductCode"
                 type="text"
-                v-model="dataQrById.info.case"
+                v-model="updateinformation.info.ProductCode"
               />
             </div>
             <label class="flex justify-center h-5">
@@ -74,7 +74,8 @@
               </div>
             </label>
           </ValidationProvider>
-          <!-- Power Supply -->
+
+          <!-- ProductName-->
           <ValidationProvider
             v-slot="{ errors }"
             rules="required"
@@ -85,7 +86,7 @@
                 class="flex justify-center p-2 mx-2"
                 label-placeholder="ProductName"
                 type="text"
-                v-model="dataQrById.info.power_supply"
+                v-model="updateinformation.info.ProductName"
               />
             </div>
             <label class="flex justify-center h-5">
@@ -97,7 +98,7 @@
               </div>
             </label>
           </ValidationProvider>
-          <!-- Main Boar -->
+          <!-- ProductType -->
           <ValidationProvider
             v-slot="{ errors }"
             rules="required"
@@ -108,7 +109,7 @@
                 class="flex justify-center p-2 mx-2"
                 label-placeholder="ProductType"
                 type="text"
-                v-model="dataQrById.info.main_boar"
+                v-model="updateinformation.info.ProductType"
               />
             </div>
             <label class="flex justify-center h-5">
@@ -120,7 +121,7 @@
               </div>
             </label>
           </ValidationProvider>
-          <!-- CPU -->
+          <!-- Department -->
           <ValidationProvider
             v-slot="{ errors }"
             rules="required"
@@ -131,7 +132,7 @@
                 class="flex justify-center p-2 mx-2"
                 label-placeholder="Department"
                 type="text"
-                v-model="dataQrById.info.cpu"
+                v-model="updateinformation.info.Department"
               />
             </div>
             <label class="flex justify-center h-5">
@@ -143,7 +144,7 @@
               </div>
             </label>
           </ValidationProvider>
-          <!-- RAM -->
+          <!-- EmployeeID -->
           <ValidationProvider
             v-slot="{ errors }"
             rules="required"
@@ -154,7 +155,7 @@
                 class="flex justify-center p-2 mx-2"
                 label-placeholder="EmployeeID"
                 type="text"
-                v-model="dataQrById.info.ram"
+                v-model="updateinformation.info.EmployeeID"
               />
             </div>
             <label class="flex justify-center h-5">
@@ -166,7 +167,7 @@
               </div>
             </label>
           </ValidationProvider>
-          <!-- Graphic Card -->
+          <!-- ProductUser -->
           <ValidationProvider
             v-slot="{ errors }"
             rules="required"
@@ -177,7 +178,7 @@
                 class="flex justify-center p-2 mx-2"
                 label-placeholder="ProductUser"
                 type="text"
-                v-model="dataQrById.info.graphic_card"
+                v-model="updateinformation.info.ProductUser"
               />
             </div>
             <label class="flex justify-center h-5">
@@ -189,7 +190,7 @@
               </div>
             </label>
           </ValidationProvider>
-          <!-- Hard Disk -->
+          <!-- ProductDetails -->
           <ValidationProvider
             v-slot="{ errors }"
             rules="required"
@@ -200,7 +201,26 @@
                 class="flex justify-cent p-2 mx-2"
                 label-placeholder="ProductDetails"
                 type="text"
-                v-model="dataQrById.info.hard_disk"
+                v-model="updateinformation.info.ProductDetails"
+              />
+            </div>
+            <label class="flex justify-center h-5 mb-2">
+              <div
+                v-if="errors && errors.length > 0"
+                class="flex justify-center text-red-400 texterror text-xs"
+              >
+                <label>{{ errors[0] }}</label>
+              </div>
+            </label>
+          </ValidationProvider>
+          <!-- SerialNumber -->
+          <ValidationProvider v-slot="{ errors }" rules="required" name="Note">
+            <div class="relative flex-auto">
+              <vs-input
+                class="flex justify-cent p-2 mx-2"
+                label-placeholder="SerialNumber"
+                type="text"
+                v-model="updateinformation.info.SerialNumber"
               />
             </div>
             <label class="flex justify-center h-5 mb-2">
@@ -216,7 +236,7 @@
 
         <!-- officeEquipment -->
         <div
-          v-if="dataQrById.template_name === 'officeEquipment'"
+          v-if="updateinformation.template_name === 'officeEquipment'"
           class="justify-center"
         >
           <!-- Power Case -->
@@ -341,12 +361,11 @@
         <vs-button danger border type="button" @click="backtohome()">
           Close
         </vs-button>
-        <vs-button border @click="insertData()">
-          Save Changes
+        <vs-button border @click="updateData(updateinformation)">
+          Update
         </vs-button>
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -388,22 +407,12 @@ export default {
       ops: {},
       owner_id: null,
     },
-    dataQrById: {
+
+    updateinformation: {
       info: {},
-      ops: null,
-      history_info: null,
+      qr_code_id: null,
+      line_user_id: null,
       owner_id: null,
-      template_name: "",
-      code_name: "",
-    },
-    dataQrById2: {
-      case: "",
-      power_supply: "",
-      main_boar: "",
-      cpu: "",
-      ram: "",
-      graphic_card: "",
-      hard_disk: "",
     },
 
     opsdata: {},
@@ -418,15 +427,24 @@ export default {
   }),
 
   computed: {
-    templatelist() {
-      return this.$store.getters["generate_qr/gettersTemplates"];
+    showgetdata() {
+      return this.$store.getters["generate_qr/gettersGetDATABYID"];
+    },
+    getUid() {
+      return this.$store.getters["account_operator/gettersUId"];
     },
   },
 
-  watch: {},
+  watch: {
+    showgetdata(data) {
+      //   console.log("DATAByJSon", data);
+      this.insertdata = JSON.parse(JSON.stringify(data));
+      this.updateinformation.info = this.insertdata.info
+    },
+  },
 
   async created() {
-    // await this.getTemplate();
+    await this.getdatajson();
   },
 
   methods: {
@@ -438,10 +456,26 @@ export default {
       this.$router.push("/");
     },
 
-    async getTemplate() {
-      await this.$store.dispatch("generate_qr/getTemplateFromApi").then(() => {
-        this.templatels = this.$store.getters["generate_qr/gettersTemplates"];
-      });
+    async getdatajson() {
+      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
+    },
+
+    async updateData(updateinfo) {
+      await this.$store
+        .dispatch("generate_qr/updateDataQrCode", {
+          dataupdate: updateinfo.info,
+          // line_user_id: this.getUid,
+          line_user_id: "U47d218c860e35342a979a0224b92ff60",
+          qrcodeid: this.insertdata.qr_code_id,
+          owner_id: this.insertdata.owner_id,
+        })
+        .then(() => {
+          const loading = this.$vs.loading();
+          setTimeout(() => {
+            loading.close();
+          }, 1000);
+          this.$router.push("/ops/equipment");
+        });
     },
   },
 };

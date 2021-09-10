@@ -164,10 +164,11 @@
       </div>
     </div>
 
+    <!-- loop  -->
     <!-- แจ้ง 2  -->
     <div class="p-6">
       <div>
-        <h2>แจ้ง 2 : เก้าอี้โยก</h2>
+        <h2>แจ้ง 2 : ก๊อกน้ำไม่ไหล</h2>
         <h6>หมายเลขทะเบียน : 4120-001-0002</h6>
       </div>
 
@@ -272,19 +273,18 @@
                       ring-8 ring-white
                     "
                   >
+                  <p>!</p>
                   </span>
                 </div>
                 <div
                   class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4"
                 >
                   <div>
-                    <p class="font-medium text-blue-500">
+                    <p class="font-medium text-red-500">
                       ยกเลิกการดำเดินการ
                       <br />
                       <a href="#" class="text-sm text-gray-500"
-                        ><a
-                          >เจ้าหน้าที่ยกเลิกการดำเดินการ
-                        </a>
+                        ><a>เจ้าหน้าที่ยกเลิกการดำเดินการ </a>
                       </a>
                     </p>
                   </div>
@@ -341,5 +341,8 @@ export default {
 }
 h6 {
   font-size: 12px;
+}
+p{
+    color: white;
 }
 </style>

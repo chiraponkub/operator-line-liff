@@ -473,6 +473,7 @@ export default {
   },
 
   methods: {
+      
     backtohome() {
       const loading = this.$vs.loading();
       setTimeout(() => {

@@ -70,7 +70,6 @@ export default {
   created() {},
 
   methods: {
-
     // backtohome() {
     //   const loading = this.$vs.loading();
     //   setTimeout(() => {
@@ -81,11 +80,21 @@ export default {
 
     sendproblem() {
       console.log("Send problem");
+      const loading = this.$vs.loading();
+      setTimeout(() => {
+        loading.close();
+      }, 1000);
+      this.$router.push("/viewer/status");
     },
+    
     sendrepair() {
       console.log("Send repair");
+      const loading = this.$vs.loading();
+      setTimeout(() => {
+        loading.close();
+      }, 1000);
+      this.$router.push("/viewer/status");
     },
-
   },
 };
 </script>

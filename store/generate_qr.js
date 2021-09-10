@@ -53,8 +53,8 @@ export const actions = {
     //     })
     // },
 
-    getDateQrById(state, payload) {
-        this.$axios.$get(`api/qr-api/getDataQrCodeJson/fdac031f-68ba-4936-b7d0-ac5104ce9c10`).then(res => {
+    async getDataQrCodeJson(state, payload) {
+        await this.$axios.$get(`api/qr-api/getDataQrCodeJson/fdac031f-68ba-4936-b7d0-ac5104ce9c10`).then(res => {
             state.commit("GETDATAQRCODEBYID", res)
         }).catch(error => {
             console.log(error);
@@ -72,12 +72,12 @@ export const actions = {
         })
     },
 
-    updateinsertDataQrCode(state, payload) {
-        this.$axios.$post("/owner/insertDataQrCode", {
-            owner_id: parseInt(payload.ownerids),
-            template_name: payload.templatename,
+    updateDataQrCode(state, payload) {
+        this.$axios.$put("/api/ops/updateDataQrCode", {
+            owner_id: payload.owner_id,
+            line_user_id: payload.line_user_id,
             qr_code_id: payload.qrcodeid,
-            info: payload.data,
+            info: payload.dataupdate,
         })
     },
 

@@ -195,7 +195,7 @@ export default {
     },
 
     async viewdataqrcode() {
-      await this.$store.dispatch("generate_qr/getDateQrById");
+      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
     },
   },
 };
