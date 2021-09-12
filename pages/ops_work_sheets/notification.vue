@@ -47,8 +47,7 @@
                           รายการ : {{ job.text }}
 
                           <!-- Satatus -->
-                          <div v-if="job.status_worksheet_1.status != ''">
-                            <span class="font-medium">
+                            <span class="font-bold">
                               {{ job.status_worksheet_1.status }}
                             </span>
                             <span class="ml-2">
@@ -60,7 +59,7 @@
                                   : "-"
                               }}
                             </span>
-                          </div>
+                          
                         </h3>
                       </div>
                     </div>
@@ -89,6 +88,9 @@ export default {
     },
     getallreport() {
       return this.$store.getters["reportops/gettersReport"];
+    },
+    statusUpdate() {
+      return this.$store.getters["reportops/gettersUpdateStatus"];
     },
   },
 

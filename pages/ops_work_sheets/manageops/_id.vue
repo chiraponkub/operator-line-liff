@@ -79,6 +79,23 @@
               </button>
             </div>
           </div>
+
+          <!-- Status Area -->
+          <!-- <div class="table">
+            <div>
+              <tr>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+              </tr>
+            </div>
+            <div>
+                <div>{{datatext.status_worksheet_1}}</div>
+                <div>{{datatext.status_worksheet_2}}</div>
+                <div>{{datatext.status_worksheet_3}}</div>
+            </div>
+          </div> -->
+          
         </div>
       </div>
     </div>
@@ -144,14 +161,6 @@ export default {
   },
 
   methods: {
-    insertpage() {
-      const loading = this.$vs.loading();
-      setTimeout(() => {
-        loading.close();
-      }, 1000);
-      this.$router.push("/insertdata");
-    },
-
     async viewdataqrcode() {
       await this.$store.dispatch("generate_qr/getDataQrCodeJson");
     },
@@ -164,23 +173,35 @@ export default {
     },
 
     async getjob() {
-      await this.$store.dispatch("reportops/getjobFromApi", {
-        opsid: this.$route.params.id,
-        line_id: this.lineid,
-      });
+      const conFirm = confirm("คุณแน่ใจหรือไหมที่จะรับงาน?");
+      if (conFirm === true) {
+        await this.$store.dispatch("reportops/getjobFromApi", {
+          opsid: this.$route.params.id,
+          line_id: this.lineid,
+        });
+        alert("รับงานเรียบร้อยแล้ว");
+      }
     },
 
     async opencencel() {
-      this.textdelete = true;
+      const conFirm = confirm("คุณแน่ใจหรือไหมที่จะยกเลิกการซ่อม?");
+      if (conFirm === true) {
+        this.textdelete = true;
+      }
     },
     async cenceljob(cenceldata) {
-      console.log(cenceldata);
-      await this.$store.dispatch("reportops/deletejobFromApi", {
-        opsid: this.$route.params.id,
-        line_id: this.lineid,
-        text_data: cenceldata,
-      });
+      // console.log(cenceldata);
+      const conFirm = confirm("คุณแน่ใจหรือไหมที่จะยกเลิกการดำเนินการ?");
+      if (conFirm === true) {
+        await this.$store.dispatch("reportops/deletejobFromApi", {
+          opsid: this.$route.params.id,
+          line_id: this.lineid,
+          text_data: cenceldata,
+        });
+        alert("รับงานเรียบร้อยแล้ว");
+      }
     },
+    
   },
 };
 </script>

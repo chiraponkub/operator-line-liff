@@ -62,6 +62,23 @@ export const actions = {
         })
     },
 
+    async insertDataQrCodeFormApi(state, payload) {
+        console.log("insertData", payload);
+        await this.$axios.$post("/api/ops/insertDataQrCode", {
+            owner_id: payload.ownerids,
+            line_user_id: payload.lineid,
+            qr_code_id: payload.qrcodeid,
+            info: payload.data,
+            template_name: payload.templatename
+        }).then(res => {
+            // console.log("DataQrCodeByid", res);
+            // state.commit("GET_INSERTDATAQRCODEBYIDOWNER", res)
+        }).catch(error => {
+            console.log(error);
+            console.log("Insert information");
+        })
+    },
+
     async insertDataQrCodeByidOwner(state, payload) {
         await this.$axios.$get(`/qr-api/getDataQrCodeJson/${payload.qr_code_id}`).then(res => {
             console.log("DataQrCodeByid", res);
@@ -72,8 +89,8 @@ export const actions = {
         })
     },
 
-    updateDataQrCode(state, payload) {
-        this.$axios.$put("/api/ops/updateDataQrCode", {
+    async updateDataQrCode(state, payload) {
+        await this.$axios.$put("/api/ops/updateDataQrCode", {
             owner_id: payload.owner_id,
             line_user_id: payload.line_user_id,
             qr_code_id: payload.qrcodeid,

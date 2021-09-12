@@ -54,25 +54,38 @@
           </div>
 
           <div class="flex justify-end mt-3">
-            <vs-button color="tumblr">ยืนยันรับซ่อม</vs-button>
+            <vs-button color="tumblr" @click="confirmjob()"
+              >ยืนยันรับซ่อม</vs-button
+            >
           </div>
 
           <!-- input Area -->
-          <div>
-            <label for="name" class="block text-xs font-medium text-gray-900"
+          <div class="textdetail mt-2">
+            <label
+              for="name"
+              class="block text-xs font-medium text-gray-900 mb-2"
               >รายละเอียดปัญหา</label
             >
-            <textarea v-model="textdata"> </textarea>
+            <label>ปัญหา : {{ datatext.text }}</label>
+            <div v-if="textdelete === true">
+              เหตุผลที่ยกเลิก :
+              <input
+                v-on-clickaway="opencencel"
+                v-model="textdata"
+                type="text"
+                class="border rounded-md p-1"
+                @keypress.enter="cenceljob(textdata)"
+              />
+            </div>
+
             <div class="flex justify-end">
-              <vs-button shadow class="cencel">ยกเลิกการซ่อม </vs-button>
+              <button class="cencel" @click="opencencel()">
+                ยกเลิกการซ่อม
+              </button>
             </div>
           </div>
-        
         </div>
       </div>
-    </div>
-  </div>
-</template>
     </div>
   </div>
 </template>
@@ -106,6 +119,8 @@ export default {
     operator: [],
 
     textdata: "",
+
+    datatext: {},
   }),
 
   computed: {
@@ -197,9 +212,41 @@ export default {
     async viewdataqrcode() {
       await this.$store.dispatch("generate_qr/getDataQrCodeJson");
     },
+
+    async confirmjob() {
+      const conFirm = confirm("คุณแน่ใจหรือไหมที่จะรับงาน?");
+      if (conFirm === true) {
+        await this.$store.dispatch("reportops/confirmJobFromApi", {
+          opsid: this.$route.params.id,
+          line_id: this.lineid,
+        });
+        alert("รับงานเรียบร้อยแล้ว");
+      }
+    },
+
+    // want
+    async opencencel() {
+      const conFirm = confirm("คุณแน่ใจหรือไหมที่จะยกเลิกการซ่อม?");
+      if (conFirm === true) {
+        this.textdelete = true;
+      }
+    },
+    async cenceljob(cenceldata) {
+      // console.log(cenceldata);
+      const conFirm = confirm("คุณแน่ใจหรือไหมที่จะยกเลิกการดำเนินการ?");
+      if (conFirm === true) {
+        await this.$store.dispatch("reportops/deletejobFromApi", {
+          opsid: this.$route.params.id,
+          line_id: this.lineid,
+          text_data: cenceldata,
+        });
+        alert("รับงานเรียบร้อยแล้ว");
+      }
+    },
   },
 };
 </script>
+
 <style >
 .title {
   color: aliceblue;

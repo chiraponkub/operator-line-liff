@@ -21,17 +21,18 @@
                 </svg>
               </Nuxt-Link>
             </div>
-            <div class="title ml-4">Insert Data</div>
+            <div class="title ml-4">เลือกประเภท QR code</div>
           </div>
         </div>
       </div>
     </nav>
+
     <div>
       <!--body-->
       <ValidationObserver ref="form">
         <!-- Select Templates -->
         <ValidationProvider>
-          <div class="flex justify-center mt-4 mb-4">
+          <div class="flex justify-center mt-6 mb-4">
             <vs-select
               v-if="templatelist.length > 0"
               label-placeholder="Templates Name"
@@ -209,29 +210,6 @@
           v-if="dataQrById.template_name === 'officeEquipment'"
           class="justify-center"
         >
-          <!-- ProductCode -->
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="required"
-            name="ProductCode"
-          >
-            <div class="relative flex-auto">
-              <vs-input
-                class="flex justify-center p-2"
-                label-placeholder="ProductCode"
-                type="text"
-                v-model="dataQrById.info.case"
-              />
-            </div>
-            <label class="flex justify-center h-5 mb-2">
-              <div
-                v-if="errors && errors.length > 0"
-                class="flex justify-center text-red-400 texterror text-xs"
-              >
-                <label>{{ errors[0] }}</label>
-              </div>
-            </label>
-          </ValidationProvider>
           <!-- ProductName-->
           <ValidationProvider
             v-slot="{ errors }"
@@ -240,13 +218,13 @@
           >
             <div class="relative flex-auto">
               <vs-input
-                class="flex justify-center p-2"
+                class="flex justify-center p-2 mx-2"
                 label-placeholder="ProductName"
                 type="text"
-                v-model="dataQrById.info.power_supply"
+                v-model="dataQrById.info.ProductName"
               />
             </div>
-            <label class="flex justify-center h-5 mb-2">
+            <label class="flex justify-center h-5">
               <div
                 v-if="errors && errors.length > 0"
                 class="flex justify-center text-red-400 texterror text-xs"
@@ -263,18 +241,20 @@
           >
             <div class="relative flex-auto">
               <vs-input
-                class="flex justify-center p-2"
+                class="flex justify-center p-2 mx-2"
                 label-placeholder="ProductType"
                 type="text"
-                v-model="dataQrById.info.main_boar"
+                v-model="dataQrById.info.ProductType"
               />
             </div>
-            <div
-              v-if="errors && errors.length > 0"
-              class="flex justify-center text-red-400 px-3 mb-2"
-            >
-              <li>{{ errors[0] }}</li>
-            </div>
+            <label class="flex justify-center h-5">
+              <div
+                v-if="errors && errors.length > 0"
+                class="flex justify-center text-red-400 texterror text-xs"
+              >
+                <label>{{ errors[0] }}</label>
+              </div>
+            </label>
           </ValidationProvider>
           <!-- Department -->
           <ValidationProvider
@@ -284,13 +264,13 @@
           >
             <div class="relative flex-auto">
               <vs-input
-                class="flex justify-center p-2"
+                class="flex justify-center p-2 mx-2"
                 label-placeholder="Department"
                 type="text"
-                v-model="dataQrById.info.cpu"
+                v-model="dataQrById.info.Department"
               />
             </div>
-            <label class="flex justify-center h-5 mb-2">
+            <label class="flex justify-center h-5">
               <div
                 v-if="errors && errors.length > 0"
                 class="flex justify-center text-red-400 texterror text-xs"
@@ -307,10 +287,75 @@
           >
             <div class="relative flex-auto">
               <vs-input
-                class="flex justify-center p-2"
+                class="flex justify-center p-2 mx-2"
                 label-placeholder="EmployeeID"
                 type="text"
-                v-model="dataQrById.info.ram"
+                v-model="dataQrById.info.EmployeeID"
+              />
+            </div>
+            <label class="flex justify-center h-5">
+              <div
+                v-if="errors && errors.length > 0"
+                class="flex justify-center text-red-400 texterror text-xs"
+              >
+                <label>{{ errors[0] }}</label>
+              </div>
+            </label>
+          </ValidationProvider>
+          <!-- ProductUser -->
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required"
+            name="ProductUser"
+          >
+            <div class="relative flex-auto">
+              <vs-input
+                class="flex justify-center p-2 mx-2"
+                label-placeholder="ProductUser"
+                type="text"
+                v-model="dataQrById.info.ProductUser"
+              />
+            </div>
+            <label class="flex justify-center h-5">
+              <div
+                v-if="errors && errors.length > 0"
+                class="flex justify-center text-red-400 texterror text-xs"
+              >
+                <label>{{ errors[0] }}</label>
+              </div>
+            </label>
+          </ValidationProvider>
+          <!-- ProductDetails -->
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required"
+            name="ProductDetails"
+          >
+            <div class="relative flex-auto">
+              <vs-input
+                class="flex justify-cent p-2 mx-2"
+                label-placeholder="ProductDetails"
+                type="text"
+                v-model="dataQrById.info.ProductDetails"
+              />
+            </div>
+            <label class="flex justify-center h-5 mb-2">
+              <div
+                v-if="errors && errors.length > 0"
+                class="flex justify-center text-red-400 texterror text-xs"
+              >
+                <label>{{ errors[0] }}</label>
+              </div>
+            </label>
+          </ValidationProvider>
+          <!-- SerialNumber -->
+          <ValidationProvider v-slot="{ errors }" rules="required" name="Note">
+            <div class="relative flex-auto">
+              <vs-input
+                class="flex justify-cent p-2 mx-2"
+                label-placeholder="SerialNumber"
+                type="text"
+                v-model="dataQrById.info.SerialNumber"
               />
             </div>
             <label class="flex justify-center h-5 mb-2">
@@ -339,7 +384,9 @@
         <vs-button danger border type="button" @click="backtohome()">
           Close
         </vs-button>
-        <vs-button border @click="insertData()"> Save Changes </vs-button>
+        <vs-button border @click="insertDataOps(dataQrById)">
+          Save Changes
+        </vs-button>
       </div>
     </div>
   </div>
@@ -353,6 +400,8 @@ export default {
     showModal: false,
     showModalInsert: false,
 
+    lineid: "line1",
+
     update: {
       id: "",
       firstname: "",
@@ -362,27 +411,6 @@ export default {
     },
     search: "",
 
-    getdatallqrcode: {
-      owner_id: null,
-      owner_username: null,
-      created_at: null,
-      updated_at: null,
-      template_name: null,
-      qr_code_id: null,
-      code_name: null,
-      url: null,
-      active: false,
-    },
-
-    data_historyQrById: {
-      history_info: {},
-      owner_id: null,
-    },
-    data_infoQrById: {
-      info: {},
-      ops: {},
-      owner_id: null,
-    },
     dataQrById: {
       info: {},
       ops: null,
@@ -391,22 +419,6 @@ export default {
       template_name: "",
       code_name: "",
     },
-    dataQrById2: {
-      case: "",
-      power_supply: "",
-      main_boar: "",
-      cpu: "",
-      ram: "",
-      graphic_card: "",
-      hard_disk: "",
-    },
-
-    opsdata: {},
-
-    getdataqrcode: null,
-    getdataownerid: null,
-
-    getterallqrcode: [],
 
     getdatabyid: null,
     getownerid: null,
@@ -416,12 +428,17 @@ export default {
     templatelist() {
       return this.$store.getters["generate_qr/gettersTemplates"];
     },
+
+    showgetdata() {
+      return this.$store.getters["generate_qr/gettersGetDATABYID"];
+    },
+
   },
 
   watch: {},
-
   async created() {
     await this.getTemplate();
+    await this.viewdataqrcode();
   },
 
   methods: {
@@ -438,7 +455,20 @@ export default {
         this.templatels = this.$store.getters["generate_qr/gettersTemplates"];
       });
     },
-    
+
+    async viewdataqrcode() {
+      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
+    },
+
+    async insertDataOps(datainsert) {
+      await this.$store.dispatch("generate_qr/insertDataQrCodeFormApi", {
+        data: datainsert.info,
+        lineid: this.lineid,
+        templatename: datainsert.template_name,
+        qrcodeid: this.showgetdata.qr_code_id,
+        ownerids: this.showgetdata.owner_id,
+      });
+    },
   },
 };
 </script>
@@ -449,6 +479,6 @@ export default {
   font-size: 24px;
 }
 .bg_title {
-  background-color: rgb(25, 91, 255);
+  background-color: rgb(59,222,200);
 }
 </style>

@@ -1,6 +1,7 @@
 export const state = () => ({
     allreport: [],
-    reportId: null
+    reportId: null,
+    statusupdate: "รอดำเนิดการ"
 })
 
 export const mutations = {
@@ -11,6 +12,11 @@ export const mutations = {
         // console.log("reportIDDD", payload);
         state.reportId = payload;
     },
+
+    SET_STATUSUPDATE(state, payload) {
+        state.statusupdate = payload;
+    },
+
 }
 export const actions = {
     getallreport(state, payload) {
@@ -34,15 +40,31 @@ export const actions = {
             console.log(error);
         })
     },
+
     getjobFromApi(state, payload) {
         console.log(payload);
-        this.$axios.$put(`api/ops/worksheet/${payload.opsid}`, { line_user_id: payload.line_id }).then(res => {
+        this.$axios.$put(`api/ops/worksheet/${payload.opsid}`, {
+            line_user_id: payload.line_id
+        }).then(res => {
             console.log("get job", res);
-            // state.commit("SET_REPORTBYID", res)
+            state.commit("SET_STATUSUPDATE", payload.satatus)
         }).catch(error => {
             console.log(error);
+            alert("มีช่างซ่อมรับงานนี้ไปแล้ว");
         })
     },
+    confirmJobFromApi(state, payload) {
+        console.log(payload);
+        this.$axios.$put(`api/ops/report/${payload.opsid}`, {
+            line_user_id: payload.line_id
+        }).then(res => {
+            // state.commit("SET_STATUSUPDATE", payload.satatus)
+        }).catch(error => {
+            console.log(error);
+            alert("มีช่างซ่อมรับงานนี้ไปแล้ว");
+        })
+    },
+
     deletejobFromApi(state, payload) {
         console.log("deleteAPI", payload);
         this.$axios.$delete(`api/ops/report/${payload.opsid}`, {
@@ -62,4 +84,5 @@ export const actions = {
 export const getters = {
     gettersReport: (state) => state.allreport,
     gettersReportById: (state) => state.reportId,
+    gettersUpdateStatus: (state) => state.statusupdate,
 }
