@@ -27,7 +27,7 @@
             </div>
           </div>
         </nav>
-
+        
         <div class="p-4">
           <div class="p-1 mb-2">
             Code Name :
@@ -65,7 +65,6 @@
             <div v-if="textdelete === true">
               เหตุผลที่ยกเลิก :
               <input
-                v-on-clickaway="opencencel"
                 v-model="textdata"
                 type="text"
                 class="border rounded-md p-1"
@@ -105,7 +104,7 @@
 <script >
 export default {
   data: () => ({
-    lineid: "line1",
+    lineid: "demo3",
     textdelete: false,
     textdata: "",
 

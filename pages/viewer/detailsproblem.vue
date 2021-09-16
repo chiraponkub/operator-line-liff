@@ -28,22 +28,74 @@
     </nav>
 
     <div class="p-7">
-      <vs-radio v-model="picked" val="1"> แจ้งปัญหา </vs-radio>
-      <vs-radio v-model="picked" val="2"> แจ้งซ่อม </vs-radio>
+      <!-- Test -->
+      <!-- <div>
+        <ul>
+          <li v-for="(item, index) in data" :key="index">
+            <input
+              type="radio"
+              v-model="checked"
+              :value="item.type_worksheet"
+            />
+            {{ item.type_worksheet }}
+          </li>
+          {{
+            checked
+          }}
+        </ul>
+      </div> -->
 
-      <!-- input Area 1 -->
-      <div v-if="picked == '1'" class="mt-6">
-        <label for="name" class="block text-xs font-medium text-gray-900"
-          >แจ้งปัญหา</label
-        >
-        <textarea v-model="dataproblem"> </textarea>
-        <div class="flex justify-end">
-          <vs-button @click="sendproblem()">ส่ง</vs-button>
+      <div v-for="(type, index) in type_report" :key="index">
+        <input type="radio" v-model="checked" :value="type.type_worksheet" />
+        {{ type.type_worksheet }}
+
+        <!-- <div class="textdetail mt-2">
+          <label for="name" class="block text-xs font-medium text-gray-900 mb-2"
+            >รายละเอียดปัญหา</label
+          >
+          <label>ปัญหา : {{ datatext.text }}</label>
+
+          <div class="flex justify-end">
+            <button class="cencel" @click="opencencel()">ยกเลิกการซ่อม</button>
+          </div>
+        </div> -->
+
+        <!-- <div v-if="checked == type.type_worksheet" class="textdetail mt-2">
+          <label for="name" class="block text-xs font-medium text-gray-900">{{
+            type.type_worksheet
+          }}</label>
+          <label>ปัญหา : {{ detaildata.text }}</label>
+          <div class="flex justify-end">
+            <vs-button @click="sendproblem(detaildata.text)">ส่ง</vs-button>
+          </div>
+        </div> -->
+
+        <div class="textdetail mt-2" v-if="checked == type.type_worksheet">
+          <label
+            for="name"
+            class="block text-xs font-medium text-gray-900 mb-2"
+            >{{ type.type_worksheet }}</label
+          >
+          <label>ปัญหา : <input type="text" v-model="detaildata.text" /></label>
+          <div class="flex justify-end">
+            <vs-button @click="sendproblem(detaildata.text, checked)">ส่ง</vs-button>
+          </div>
         </div>
       </div>
 
+      <!-- input Area 1 -->
+      <!-- <div class="textdetail mt-2" v-if="picked == '1'">
+        <label for="name" class="block text-xs font-medium text-gray-900 mb-2"
+          >แจ้งปัญหา</label
+        >
+        <label>ปัญหา : <input type="text" v-model="detaildata.text" /></label>
+        <div class="flex justify-end">
+          <vs-button @click="sendproblem()">ส่ง</vs-button>
+        </div>
+      </div> -->
+
       <!-- input Area 2 -->
-      <div v-if="picked == '2'" class="mt-4">
+      <!-- <div v-if="picked == '2'" class="mt-4">
         <label for="name" class="block text-xs font-medium text-gray-900"
           >รายละเอียดแจ้งซ่อม</label
         >
@@ -51,7 +103,7 @@
         <div class="flex justify-end">
           <vs-button @click="sendrepair()">ส่ง</vs-button>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -61,23 +113,47 @@ export default {
   data: () => ({
     picked: null,
     dataproblem: "",
+
+    type_report: [],
+
+    detaildata: {
+      text: "",
+      type: "",
+    },
+
+    data: [
+      {
+        type_worksheet: "แจ้งซ่อม",
+      },
+      {
+        type_worksheet: "แจ้งปัญหา",
+      },
+    ],
+    checked: "",
   }),
 
-  computed: {},
+  computed: {
+    typeReport() {
+      return this.$store.getters["reportops/gettersTypeReport"];
+    },
+    getallreport() {
+      return this.$store.getters["reportops/gettersReport"];
+    },
+  },
 
-  watch: {},
+  watch: {
+    typeReport(data) {
+      console.log("Type", data);
+      this.type_report = JSON.parse(JSON.stringify(data));
+    },
+  },
 
-  created() {},
+  async created() {
+    await this.gettypeReport();
+    await this.viewdataqrcode();
+  },
 
   methods: {
-    // backtohome() {
-    //   const loading = this.$vs.loading();
-    //   setTimeout(() => {
-    //     loading.close();
-    //   }, 1000);
-    //   this.$router.push("/");
-    // },
-
     sendproblem() {
       console.log("Send problem");
       const loading = this.$vs.loading();
@@ -86,9 +162,32 @@ export default {
       }, 1000);
       this.$router.push("/viewer/status");
     },
-    
+
     sendrepair() {
       console.log("Send repair");
+      const loading = this.$vs.loading();
+      setTimeout(() => {
+        loading.close();
+      }, 1000);
+      this.$router.push("/viewer/status");
+    },
+
+    async viewdataqrcode() {
+      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
+    },
+
+    async gettypeReport() {
+      await this.$store.dispatch("reportops/gettypeReportFormApi");
+    },
+
+    async sendproblem(data, checked) {
+        console.log("Text",data);
+        console.log("checked",checked);
+      await this.$store.dispatch("reportops/postjobFromApi", {
+        qrcodeid: "9473c2a1-ae0b-4d17-9d24-0c24fe83498d",
+        text: data,
+        type: checked,
+      });
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
@@ -107,7 +206,7 @@ export default {
 .bg_titlee {
   background-color: rgb(255, 69, 0);
 }
-textarea {
+.textdetail {
   width: 100%;
   border: 2px solid #ddd;
   border-radius: 10px;

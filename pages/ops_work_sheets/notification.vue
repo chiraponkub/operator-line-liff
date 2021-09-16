@@ -12,6 +12,7 @@
             </div>
           </div>
         </nav>
+
         <div class="p-4">
           <div>
             <div v-for="(job, index) in getallreport" :key="index">
@@ -44,22 +45,35 @@
                           </div>
                         </div>
                         <h3 class="text-sm text-gray-500">
-                          รายการ : {{ job.text }}
+                          รายการ : <span>{{ job.text }}</span>
+
+                          <!-- {{job.status_worksheet.length}} -->
 
                           <!-- Satatus -->
-                            <span class="font-bold">
-                              {{ job.status_worksheet_1.status }}
-                            </span>
-                            <span class="ml-2">
+                          <span
+                            class="font-bold"
+                            v-for="(item, index) in job.status_worksheet"
+                            :key="index"
+                          >
+                            <!-- {{item}}
+                          {{index}} -->
+                            {{
+                              fomatStatusToDetail(
+                                item.status,
+                                job.status_worksheet.length
+                              ).status
+                            }}
+
+                            <!-- {{ item.status }} -->
+
+                            <!-- <span class="ml-2">
                               {{
-                                job.status_worksheet_1.update_at != ""
-                                  ? $moment(
-                                      job.status_worksheet_1.update_at
-                                    ).format("DD/MM/YYYY")
+                                item.update_at != ""
+                                  ? $moment(item.update_at).format("DD/MM/YYYY")
                                   : "-"
                               }}
-                            </span>
-                          
+                            </span> -->
+                          </span>
                         </h3>
                       </div>
                     </div>
@@ -79,7 +93,7 @@
 <script >
 export default {
   data: () => ({
-    lineid: "line1",
+    lineid: "demo3",
   }),
 
   computed: {
@@ -115,6 +129,23 @@ export default {
 
     async getreport() {
       await this.$store.dispatch("reportops/getallreport", this.lineid);
+    },
+
+    fomatStatusToDetail(status, lastindex) {
+      // console.log("Last Index",lastindex);
+      // console.log("Status",status);
+
+      if (status == lastindex) {
+        return {
+          status: status.length,
+          text: "text-blue-500",
+        };
+      } else {
+        return {
+          status: status,
+          text: "text-red-500",
+        };
+      }
     },
   },
 };

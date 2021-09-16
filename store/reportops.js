@@ -1,15 +1,18 @@
 export const state = () => ({
     allreport: [],
     reportId: null,
-    statusupdate: "รอดำเนิดการ"
+    status_current: [],
+    type_report: [],
+    data_update: {}
 })
 
 export const mutations = {
     SET_REPORT(state, payload) {
         state.allreport = payload;
+
+
     },
     SET_REPORTBYID(state, payload) {
-        // console.log("reportIDDD", payload);
         state.reportId = payload;
     },
 
@@ -17,32 +20,62 @@ export const mutations = {
         state.statusupdate = payload;
     },
 
+    SET_GETTYPEREPORT(state, payload) {
+        state.type_report = payload.data
+    },
+
+    GET_DATAUPDATE(state, payload) {
+        state.data_update = payload
+    }
+
 }
 export const actions = {
     getallreport(state, payload) {
-        // console.log("report", payload);
+        console.log("report", payload);
         this.$axios.$get(`/api/ops/report/${payload}`).then(res => {
-            console.log(res);
+
+            // for (let data = 0; data < res.length; data++) {
+            //     console.log("DATA", res[data].status_worksheet.length);
+
+            //     for (let status = 0; status < res[data].status_worksheet.length; status++) {
+            //         console.log("status", status);
+            //         console.log("status_worksheet", res[data].status_worksheet[status]);
+            //     }
+            // }
             state.commit("SET_REPORT", res)
         }).catch(error => {
             console.log(error);
         })
     },
+
     reportByIdFromApi(state, payload) {
         const param = {
             report_id: payload.opsid,
             line_user_id: payload.line_id
         }
         this.$axios.$get(`api/ops/report/`, { params: param }).then(res => {
-            // console.log("reportByIdFromApi", res);
             state.commit("SET_REPORTBYID", res)
         }).catch(error => {
             console.log(error);
         })
     },
 
+
+    postjobFromApi(state, payload) {
+        this.$axios.$post("api/ops/report", {
+            line_user_id: payload.line_id,
+            qr_code_id: payload.qrcodeid,
+            text: payload.text,
+            type: payload.type
+        }).then(res => {
+            // state.commit("SET_STATUSUPDATE", payload.satatus)
+        }).catch(error => {
+            alert("Text or Type required")
+            console.log(error);
+        })
+    },
+
     getjobFromApi(state, payload) {
-        console.log(payload);
         this.$axios.$put(`api/ops/worksheet/${payload.opsid}`, {
             line_user_id: payload.line_id
         }).then(res => {
@@ -53,10 +86,13 @@ export const actions = {
             alert("มีช่างซ่อมรับงานนี้ไปแล้ว");
         })
     },
+
     confirmJobFromApi(state, payload) {
-        console.log(payload);
+        console.log("ConfirmJob", payload);
         this.$axios.$put(`api/ops/report/${payload.opsid}`, {
-            line_user_id: payload.line_id
+            line_user_id: payload.line_id,
+            text: payload.text_data,
+            // equipments: [],
         }).then(res => {
             // state.commit("SET_STATUSUPDATE", payload.satatus)
         }).catch(error => {
@@ -79,10 +115,26 @@ export const actions = {
             console.log(error);
         })
     },
+
+    gettypeReportFormApi(state, payload) {
+        this.$axios.$get("api/ops/typeReport").then((res) => {
+            state.commit("SET_GETTYPEREPORT", res)
+        })
+    },
+
+    getDataUpdateFormApi(state, payload) {
+        this.$axios.$get(`api/ops/getDataUpdate/9473c2a1-ae0b-4d17-9d24-0c24fe83498d`)
+            .then((res) => {
+                state.commit('GET_DATAUPDATE', res)
+            })
+    }
+
 }
 
 export const getters = {
     gettersReport: (state) => state.allreport,
     gettersReportById: (state) => state.reportId,
     gettersUpdateStatus: (state) => state.statusupdate,
+    gettersTypeReport: (state) => state.type_report,
+    gettersUpdateData: (state) => state.data_update,
 }

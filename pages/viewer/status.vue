@@ -28,71 +28,41 @@
     </nav>
 
     <!-- แจ้ง 1  -->
-    <div class="p-6">
+    <div class="p-6" v-for="(data, index) in getallData.ops" :key="index">
       <div>
-        <h2>แจ้ง 1 : เก้าอี้โยก</h2>
-        <h6>หมายเลขทะเบียน : 4120-001-0002</h6>
+        <h2>{{ data.Ops.type }} : {{ data.Ops.text }}</h2>
+        <!-- <h6>หมายเลขทะเบียน : 4120-001-0002</h6> -->
       </div>
 
-      <div class="p-6">
-        <ul role="list" class="-mb-8">
+      <div
+        v-for="(statusupdate, index) in data.Ops.status_worksheet"
+        :key="index"
+      >
+        <ul role="list" class="-mb-8 p-3" v-if="statusupdate.status != ''">
           <li>
-            <div class="relative pb-8">
-              <span
-                class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                aria-hidden="true"
-              ></span>
-              <div class="relative flex space-x-3">
-                <div>
-                  <span
-                    class="
-                      h-8
-                      w-8
-                      rounded-full
-                      bg-blue-500
-                      flex
-                      items-center
-                      justify-center
-                      ring-8 ring-white
-                    "
-                  >
-                  </span>
-                </div>
-                <div
-                  class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4"
-                >
-                  <div>
-                    <p class="font-medium text-blue-500">รอดำเนินการ</p>
-                  </div>
-                  <div
-                    class="text-right text-sm whitespace-nowrap text-gray-500"
-                  >
-                    <time datetime="2021-09-20">2021-09-20</time>
-                  </div>
-                </div>
+            <div class="relative pb-6">
+              <!-- line status -->
+              <div
+                v-if="statusupdate.status != data.Ops.status_worksheet.length"
+              >
+                <span
+                  class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                  aria-hidden="true"
+                ></span>
               </div>
-            </div>
-          </li>
 
-          <li>
-            <div class="relative pb-8">
-              <span
-                class="absolute top-4 left-4 -ml-px h-32 w-0.5 bg-gray-200"
-                aria-hidden="true"
-              ></span>
               <div class="relative flex space-x-3">
                 <div>
                   <span
-                    class="
-                      h-8
+                    :class="`h-8
                       w-8
                       rounded-full
-                      bg-yellow-500
                       flex
                       items-center
                       justify-center
-                      ring-8 ring-white
-                    "
+                      ring-8 ring-white ${
+                        fomatStatusToDetail(statusupdate.status).color
+                      }`"
                   >
                   </span>
                 </div>
@@ -100,198 +70,32 @@
                   class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4"
                 >
                   <div>
-                    <p class="font-medium text-yellow-500">
-                      กำลังดำเดินการ
-                      <br />
-                      <a href="#" class="text-sm text-gray-500"
-                        ><a class="text-sm">เจ้าหน้าที่รับเรื่องแล้ว </a><br />
-                        <a>กำลังดำเดินการแก้ไข</a>
-                      </a>
+                    <p
+                      :class="`font-medium ${
+                        fomatStatusToDetail(statusupdate.status).text
+                      }`"
+                    >
+                      <!-- {{statusupdate}} -->
+                      {{ statusupdate.status }}
                     </p>
+                    <br />
+                    <a href="#" class="text-sm text-gray-500">
+                      <a class="text-sm"
+                        >{{
+                          fomatStatusToDetail(statusupdate.status).detail
+                        }} </a
+                      ><br />
+                      <!-- <a>กำลังดำเนินการแก้ไข</a> -->
+                    </a>
                   </div>
                   <div
                     class="text-right text-sm whitespace-nowrap text-gray-500"
                   >
-                    <time datetime="2021-09-22">2021-09-20</time>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <li>
-            <div class="relative pb-8">
-              <div class="relative flex space-x-3">
-                <div>
-                  <span
-                    class="
-                      h-8
-                      w-8
-                      rounded-full
-                      bg-green-500
-                      flex
-                      items-center
-                      justify-center
-                      ring-8 ring-white
-                    "
-                  >
-                  </span>
-                </div>
-                <div
-                  class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4"
-                >
-                  <div>
-                    <p class="font-medium text-blue-500">
-                      เสร็จสิ้น
-                      <br />
-                      <a href="#" class="text-sm text-gray-500"
-                        ><a class="text-sm">เจ้าหน้าที่ได้ทำงานซ่อมบำรุง </a
-                        ><br />
-                        <a>และพร้อมใช้งานแล้ว</a>
-                      </a>
-                    </p>
-                  </div>
-                  <div
-                    class="text-right text-sm whitespace-nowrap text-gray-500"
-                  >
-                    <time datetime="2021-09-28">2021-09-20</time>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- loop  -->
-    <!-- แจ้ง 2  -->
-    <div class="p-6">
-      <div>
-        <h2>แจ้ง 2 : ก๊อกน้ำไม่ไหล</h2>
-        <h6>หมายเลขทะเบียน : 4120-001-0002</h6>
-      </div>
-
-      <div class="p-6">
-        <ul role="list" class="-mb-8">
-          <li>
-            <div class="relative pb-8">
-              <span
-                class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                aria-hidden="true"
-              ></span>
-              <div class="relative flex space-x-3">
-                <div>
-                  <span
-                    class="
-                      h-8
-                      w-8
-                      rounded-full
-                      bg-blue-500
-                      flex
-                      items-center
-                      justify-center
-                      ring-8 ring-white
-                    "
-                  >
-                  </span>
-                </div>
-                <div
-                  class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4"
-                >
-                  <div>
-                    <p class="font-medium text-blue-500">รอดำเนินการ</p>
-                  </div>
-                  <div
-                    class="text-right text-sm whitespace-nowrap text-gray-500"
-                  >
-                    <time datetime="2021-09-20">2021-09-20</time>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <li>
-            <div class="relative pb-8">
-              <span
-                class="absolute top-4 left-4 -ml-px h-32 w-0.5 bg-gray-200"
-                aria-hidden="true"
-              ></span>
-              <div class="relative flex space-x-3">
-                <div>
-                  <span
-                    class="
-                      h-8
-                      w-8
-                      rounded-full
-                      bg-yellow-500
-                      flex
-                      items-center
-                      justify-center
-                      ring-8 ring-white
-                    "
-                  >
-                  </span>
-                </div>
-                <div
-                  class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4"
-                >
-                  <div>
-                    <p class="font-medium text-yellow-500">
-                      กำลังดำเดินการ
-                      <br />
-                      <a href="#" class="text-sm text-gray-500"
-                        ><a class="text-sm">เจ้าหน้าที่รับเรื่องแล้ว </a><br />
-                        <a>กำลังดำเดินการแก้ไข</a>
-                      </a>
-                    </p>
-                  </div>
-                  <div
-                    class="text-right text-sm whitespace-nowrap text-gray-500"
-                  >
-                    <time datetime="2021-09-22">2021-09-20</time>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <li>
-            <div class="relative pb-8">
-              <div class="relative flex space-x-3">
-                <div>
-                  <span
-                    class="
-                      h-8
-                      w-8
-                      rounded-full
-                      bg-red-500
-                      flex
-                      items-center
-                      justify-center
-                      ring-8 ring-white
-                    "
-                  >
-                  <p>!</p>
-                  </span>
-                </div>
-                <div
-                  class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4"
-                >
-                  <div>
-                    <p class="font-medium text-red-500">
-                      ยกเลิกการดำเดินการ
-                      <br />
-                      <a href="#" class="text-sm text-gray-500"
-                        ><a>เจ้าหน้าที่ยกเลิกการดำเดินการ </a>
-                      </a>
-                    </p>
-                  </div>
-                  <div
-                    class="text-right text-sm whitespace-nowrap text-gray-500"
-                  >
-                    <time datetime="2021-09-28">2021-09-20</time>
+                    <time>{{
+                      statusupdate.update_at != ""
+                        ? $moment(statusupdate.update_at).format("DD-MM-YYYY")
+                        : "-"
+                    }}</time>
                   </div>
                 </div>
               </div>
@@ -305,18 +109,24 @@
 
 <script>
 export default {
-  data: () => ({}),
+  data: () => ({
+    getstatus: {},
+  }),
 
   computed: {
-    templatelist() {
-      return this.$store.getters["generate_qr/gettersTemplates"];
+    getallData() {
+      return this.$store.getters["generate_qr/gettersGetDATABYID"];
+    },
+    getDataStatus() {
+      return this.$store.getters["reportops/gettersUpdateData"];
     },
   },
 
   watch: {},
 
   async created() {
-    // await this.getTemplate();
+    // await this.getDataupdate();
+    await this.viewdataqrcode();
   },
 
   methods: {
@@ -326,6 +136,50 @@ export default {
         loading.close();
       }, 1000);
       this.$router.push("/");
+    },
+
+     openNotification(position = null) {
+          const noti = this.$vs.notification({
+            position,
+            title: 'Documentation Vuesax 4.0+',
+            text: `These documents refer to the latest version of vuesax (4.0+),
+            to see the documents of the previous versions you can do it here 👉 Vuesax3.x`
+          })
+        },
+
+    // async getDataupdate() {
+    //   await this.$store.dispatch("reportops/getDataUpdateFormApi");
+    // },
+    async viewdataqrcode() {
+      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
+    },
+
+    fomatStatusToDetail(status) {
+      //  console.log(status);
+      if (status == "รอดำเนิดการ") {
+        return {
+          text: "text-blue-500",
+          color: "bg-blue-500",
+        };
+      } else if (status == "กำลังดำเนินการ") {
+        return {
+          detail: "เจ้าหน้าที่รับเรื่องแล้ว กำลังดำเนินการแก้ไข",
+          text: "text-yellow-500",
+          color: "bg-yellow-500",
+        };
+      } else if (status == "ดำเนินการเสร็จสิ้น") {
+        return {
+          detail: "เจ้าหน้าที่ได้ทำงานซ่อมบำรุง และพร้อมใช้งานแล้ว",
+          text: "text-green-500",
+          color: "bg-green-500",
+        };
+      } else {
+        return {
+          detail: "เจ้าหน้าที่ยกเลิกการดำเดินการ",
+          text: "text-red-500",
+          color: "bg-red-500",
+        };
+      }
     },
   },
 };
@@ -342,7 +196,7 @@ export default {
 h6 {
   font-size: 12px;
 }
-p{
-    color: white;
+p {
+  color: white;
 }
 </style>

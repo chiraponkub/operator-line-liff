@@ -4,8 +4,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center">
-            <div class="flex-shrink-0">
-            </div>
+            <div class="flex-shrink-0"></div>
             <div class="title ml-4">เลือกประเภท QR code</div>
           </div>
         </div>
@@ -195,6 +194,29 @@
           v-if="dataQrById.template_name === 'officeEquipment'"
           class="justify-center"
         >
+          <!-- ProductCode-->
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required"
+            name="ProductCode"
+          >
+            <div class="relative flex-auto">
+              <vs-input
+                class="flex justify-center p-2 mx-2"
+                label-placeholder="ProductCode"
+                type="text"
+                v-model="dataQrById.info.ProductCode"
+              />
+            </div>
+            <label class="flex justify-center h-5">
+              <div
+                v-if="errors && errors.length > 0"
+                class="flex justify-center text-red-400 texterror text-xs"
+              >
+                <label>{{ errors[0] }}</label>
+              </div>
+            </label>
+          </ValidationProvider>
           <!-- ProductName-->
           <ValidationProvider
             v-slot="{ errors }"
@@ -333,14 +355,110 @@
               </div>
             </label>
           </ValidationProvider>
+          <!-- Note -->
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required"
+            name="Note"
+          >
+            <div class="relative flex-auto">
+              <vs-input
+                class="flex justify-cent p-2 mx-2"
+                label-placeholder="Note"
+                type="text"
+                v-model="dataQrById.info.Note"
+              />
+            </div>
+            <label class="flex justify-center h-5 mb-2">
+              <div
+                v-if="errors && errors.length > 0"
+                class="flex justify-center text-red-400 texterror text-xs"
+              >
+                <label>{{ errors[0] }}</label>
+              </div>
+            </label>
+          </ValidationProvider>
           <!-- SerialNumber -->
-          <ValidationProvider v-slot="{ errors }" rules="required" name="Note">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required"
+            name="SerialNumber"
+          >
             <div class="relative flex-auto">
               <vs-input
                 class="flex justify-cent p-2 mx-2"
                 label-placeholder="SerialNumber"
                 type="text"
                 v-model="dataQrById.info.SerialNumber"
+              />
+            </div>
+            <label class="flex justify-center h-5 mb-2">
+              <div
+                v-if="errors && errors.length > 0"
+                class="flex justify-center text-red-400 texterror text-xs"
+              >
+                <label>{{ errors[0] }}</label>
+              </div>
+            </label>
+          </ValidationProvider>
+          <!-- ProductDetails -->
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required"
+            name="ProductDetails"
+          >
+            <div class="relative flex-auto">
+              <vs-input
+                class="flex justify-cent p-2 mx-2"
+                label-placeholder="ProductDetails"
+                type="text"
+                v-model="dataQrById.info.ProductDetails"
+              />
+            </div>
+            <label class="flex justify-center h-5 mb-2">
+              <div
+                v-if="errors && errors.length > 0"
+                class="flex justify-center text-red-400 texterror text-xs"
+              >
+                <label>{{ errors[0] }}</label>
+              </div>
+            </label>
+          </ValidationProvider>
+          <!-- ProductInsurance -->
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required"
+            name="ProductInsurance"
+          >
+            <div class="relative flex-auto">
+              <vs-input
+                class="flex justify-cent p-2 mx-2"
+                label-placeholder="ProductInsurance"
+                type="text"
+                v-model="dataQrById.info.ProductInsurance"
+              />
+            </div>
+            <label class="flex justify-center h-5 mb-2">
+              <div
+                v-if="errors && errors.length > 0"
+                class="flex justify-center text-red-400 texterror text-xs"
+              >
+                <label>{{ errors[0] }}</label>
+              </div>
+            </label>
+          </ValidationProvider>
+          <!-- EndUsingTheProduct -->
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required"
+            name="EndUsingTheProduct"
+          >
+            <div class="relative flex-auto">
+              <vs-input
+                class="flex justify-cent p-2 mx-2"
+                label-placeholder="EndUsingTheProduct"
+                type="text"
+                v-model="dataQrById.info.EndUsingTheProduct"
               />
             </div>
             <label class="flex justify-center h-5 mb-2">
@@ -385,7 +503,7 @@ export default {
     showModal: false,
     showModalInsert: false,
 
-    lineid: "line1",
+    lineid: "demo3",
 
     update: {
       id: "",

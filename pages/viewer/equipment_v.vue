@@ -27,7 +27,7 @@
                 v-for="(item, index) in history_info"
                 :key="index"
               >
-                <dl class="grid grid-cols-1 gap-x-3 gap-y-3 sm:grid-cols-2">
+                <dl class="grid grid-cols-2 gap-x-3 gap-y-3 sm:grid-cols-2">
                   <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">
                       <b>UpdatedAt :</b>

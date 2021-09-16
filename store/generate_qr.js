@@ -25,7 +25,6 @@ export const mutations = {
         }
     },
     GETDATAQRCODEBYID(state, payload) {
-        // console.log("GETDATAQRCODEBYID", payload);
         state.databyid = payload
     },
 
@@ -54,7 +53,9 @@ export const actions = {
     // },
 
     async getDataQrCodeJson(state, payload) {
-        await this.$axios.$get(`api/qr-api/getDataQrCodeJson/fdac031f-68ba-4936-b7d0-ac5104ce9c10`).then(res => {
+        // 55391398-5dd1-49c2-adfb-a84d78516c16
+        await this.$axios.$get(`api/qr-api/getDataQrCodeJson/9473c2a1-ae0b-4d17-9d24-0c24fe83498d`).then(res => {
+            // console.log("json", res);
             state.commit("GETDATAQRCODEBYID", res)
         }).catch(error => {
             console.log(error);
@@ -63,7 +64,7 @@ export const actions = {
     },
 
     async insertDataQrCodeFormApi(state, payload) {
-        console.log("insertData", payload);
+        // console.log("insertData", payload);
         await this.$axios.$post("/api/ops/insertDataQrCode", {
             owner_id: payload.ownerids,
             line_user_id: payload.lineid,
@@ -76,6 +77,7 @@ export const actions = {
         }).catch(error => {
             console.log(error);
             console.log("Insert information");
+            alert("")
         })
     },
 

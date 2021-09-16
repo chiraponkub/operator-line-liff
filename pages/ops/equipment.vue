@@ -31,7 +31,7 @@
 
         <div class="grid lg:grid-cols-3 grid-cols-1 gap-5 p-2">
           <!-- History -->
-          <div class="bg-white shadow sm:rounded-lg oldinfo">
+          <!-- <div class="bg-white shadow sm:rounded-lg oldinfo">
             <div class="px-4 py-5 sm:px-6">
               <h3 class="text-lg leading-6 font-medium text-gray-900">
                 Old Information
@@ -127,7 +127,7 @@
                 </dl>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Information -->
           <div class="bg-white shadow overflow-hidden sm:rounded-lg">
