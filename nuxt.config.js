@@ -57,6 +57,9 @@ export default {
         '@nuxtjs/axios',
     ],
 
+    router: {
+        base: '/qr/'
+    },
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
     axios: { baseURL: 'http://localhost:8080' },
 

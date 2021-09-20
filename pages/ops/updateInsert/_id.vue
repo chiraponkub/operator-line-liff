@@ -5,21 +5,20 @@
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <Nuxt-Link to="/">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                  class="bi bi-arrow-left-circle text-white"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"
-                  />
-                </svg>
-              </Nuxt-Link>
+              <svg
+                @click="backtohome()"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="currentColor"
+                class="bi bi-arrow-left-circle text-white"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"
+                />
+              </svg>
             </div>
             <div class="title ml-4">อัพเดทข้อมูล</div>
           </div>
@@ -376,6 +375,7 @@ export default {
     limit: 5,
     showModal: false,
     showModalInsert: false,
+    lineid: "demo3",
 
     update: {
       id: "",
@@ -439,7 +439,7 @@ export default {
     showgetdata(data) {
       //   console.log("DATAByJSon", data);
       this.insertdata = JSON.parse(JSON.stringify(data));
-      this.updateinformation.info = this.insertdata.info
+      this.updateinformation.info = this.insertdata.info;
     },
   },
 
@@ -453,11 +453,14 @@ export default {
       setTimeout(() => {
         loading.close();
       }, 1000);
-      this.$router.push("/");
+      this.$router.push(`/?liff.state=%3Fqr_id%3D${this.$route.params.id}`);
     },
 
     async getdatajson() {
-      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
+      await this.$store.dispatch(
+        `generate_qr/getDataQrCodeJson`,
+        this.$route.params.id
+      );
     },
 
     async updateData(updateinfo) {
@@ -465,7 +468,7 @@ export default {
         .dispatch("generate_qr/updateDataQrCode", {
           dataupdate: updateinfo.info,
           // line_user_id: this.getUid,
-          line_user_id: "U47d218c860e35342a979a0224b92ff60",
+          line_user_id: this.lineid,
           qrcodeid: this.insertdata.qr_code_id,
           owner_id: this.insertdata.owner_id,
         })

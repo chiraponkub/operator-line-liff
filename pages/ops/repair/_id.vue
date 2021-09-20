@@ -7,21 +7,20 @@
             <div class="flex items-center justify-between h-16">
               <div class="flex items-center">
                 <div class="flex-shrink-0">
-                  <Nuxt-Link to="/">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      fill="currentColor"
-                      class="bi bi-arrow-left-circle text-white"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"
-                      />
-                    </svg>
-                  </Nuxt-Link>
+                  <svg
+                    @click="backtohome()"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    fill="currentColor"
+                    class="bi bi-arrow-left-circle text-white"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"
+                    />
+                  </svg>
                 </div>
                 <div class="title ml-4">รับซ่อม</div>
               </div>
@@ -33,10 +32,6 @@
           <div class="grid lg:grid-cols-3 grid-cols-1 gap-5 p-2">
             <!-- Information -->
             <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-              <!-- <div class="px-4 py-5 sm:px-6 grid grid-cols-2 gap-x-3 gap-y-3">
-              <h3 class="text-lg font-medium text-gray-900">Information</h3>
-            </div> -->
-
               <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
                 <dl class="grid grid-cols-2 gap-x-3 gap-y-3 sm:grid-cols-2">
                   <div
@@ -54,18 +49,23 @@
             </div>
           </div>
 
-          <!-- Check ยืนยัน ถ้ามีการกด edit ให้ส่งค่านั้นมา เช็คเงื่อนไขให้ปุ่มหาย v-if="add_open.worksheet != null"-->
+          <!-- Check ยืนยัน ถ้ามีการกด edit ให้ส่งค่านั้นมา เช็คเงื่อนไขให้ปุ่มหาย v-if="add_newdata.worksheet != null"-->
           <div class="flex justify-end mt-3">
-            <vs-button color="tumblr" @click="confirmjobOps(add_open)"
-              >ยืนยันซ่อม</vs-button
+            <vs-button
+              success
+              icon
+              color="tumblr"
+              @click="confirmjobOps(add_newdata)"
+            >
+              <i class="bx bx-select-multiple mr-2"></i>ยืนยันซ่อม</vs-button
             >
           </div>
-          <!-- <div v-else class="">
+          <!-- <div v-if="add_newdata != ''">
             <a>No repair notice</a>
           </div> -->
 
           <!-- input Area -->
-          <div v-for="(data, index) in add_open" :key="index">
+          <div v-for="(data, index) in add_newdata" :key="index">
             <div class="textdetail mt-2">
               <label
                 for="name"
@@ -79,8 +79,8 @@
                   <svg
                     @click="isMenuExpand(data.id)"
                     xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
+                    width="28"
+                    height="28"
                     fill="currentColor"
                     class="bi bi-arrow-down-short"
                     viewBox="0 0 16 16"
@@ -92,18 +92,19 @@
                   </svg>
                 </div>
               </div>
-              <div v-if="data.is_opencencel === true">
+              <!-- input Cencel -->
+              <div v-if="data.is_opencencel === true" class="p-2">
                 เหตุผลที่ยกเลิก :
                 <input
                   v-model="data.textcencel"
                   type="text"
-                  class="border rounded-md p-1"
-                  @keypress.enter="cenceljob(data.textcencel)"
+                  class="border rounded-md w-3/5 p-1"
+                  @keypress.enter="cenceljob(data)"
                 />
               </div>
-
-              <div class="flex justify-end">
-                <button class="cencel" @click="opencencel()">
+              <!-- button Cencel -->
+              <div class="flex justify-end p-2">
+                <button class="cencel" @click="isCencleExpand(data.id)">
                   ยกเลิกการซ่อม
                 </button>
               </div>
@@ -114,28 +115,40 @@
               v-if="data.is_open == true"
             >
               การดำเนินการ :
-              <div class="grid grid-cols-2 gap-x-4 items-center">
+              <div class="grid grid-cols-1 gap-x-4 items-center">
                 <input
                   v-model="data.input_proceed"
                   type="text"
-                  class="border rounded-md p-1"
-                  @keypress.enter="confirmjobOps(data.input_proceed)"
+                  class="border rounded-md p-1 mb-2"
+                  @keypress.enter="confirmjobOps()"
                 />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  fill="currentColor"
-                  class="bi bi-plus-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-                  />
-                  <path
-                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
-                  />
-                </svg>
+                <div>
+                  <label> อุปกรณ์ที่ใช้ : </label>
+                  <div class="grid grid-cols-2 gap-x-4 items-center">
+                    <input
+                      v-model="data.equipments"
+                      type="text"
+                      class="border rounded-md p-1"
+                    />
+                    <button @click="add_equipments(count)">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        fill="currentColor"
+                        class="bi bi-plus-circle"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                        />
+                        <path
+                          d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -155,7 +168,7 @@ export default {
     textdelete: false,
     textcencel: "",
 
-    add_open: [],
+    add_newdata: [],
     is_open: false,
 
     data_info: {
@@ -174,8 +187,9 @@ export default {
       //   EndUsingTheProduct: "",
     },
     history_info: [],
-
     operator: [],
+
+    count: 0,
   }),
 
   computed: {
@@ -187,6 +201,9 @@ export default {
     },
     getDataStatus() {
       return this.$store.getters["reportops/gettersUpdateData"];
+    },
+    gatQrId() {
+      return this.$store.getters["account_operator/gettersQRcodeId"];
     },
   },
 
@@ -218,7 +235,7 @@ export default {
 
     getDataStatus(data) {
       if (data.worksheet != null) {
-        this.add_open = data.worksheet.map((items) => {
+        this.add_newdata = data.worksheet.map((items) => {
           return {
             id: items.id,
             qr_code_id: items.qr_code_id,
@@ -232,7 +249,7 @@ export default {
             textcencel: "",
           };
         });
-        console.log("this.add_open", this.add_open);
+        console.log("this.add_newdata", this.add_newdata);
       } else {
         this.openNotification();
       }
@@ -245,10 +262,14 @@ export default {
   },
 
   methods: {
-    logout() {
-      // localStorage.clear();
-      this.$router.go("/login");
+    backtohome() {
+      const loading = this.$vs.loading();
+      setTimeout(() => {
+        loading.close();
+      }, 1000);
+      this.$router.push(`/?liff.state=%3Fqr_id%3D${this.$route.params.id}`);
     },
+
     insertpage() {
       const loading = this.$vs.loading();
       setTimeout(() => {
@@ -265,26 +286,48 @@ export default {
     },
 
     async viewdataqrcode() {
-      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
+      console.log("QR_ID", this.gatQrId);
+      await this.$store.dispatch(
+        "account_operator/getDataQrCodeJson",
+        this.gatQrId
+      );
+    },
+    // async viewdataqrcode() {
+    //   console.log("QR_ID", this.gatQrId);
+    //   await this.$store.dispatch(
+    //     "account_operator/getDataQrCodeJson",
+    //     this.gatQrId
+    //   );
+    // },
+
+    async viewdataqrcode() {
+      await this.$store.dispatch(
+        `generate_qr/getDataQrCodeJson`,
+        this.$route.params.id
+      );
     },
 
     // Doing Today
     async confirmjobOps(arraydata) {
+      console.log("Con", arraydata);
       for (let index in arraydata) {
         if (arraydata[index].input_proceed != "") {
-          console.log("input_proceed", arraydata[index].input_proceed);
-          await this.$store.dispatch("reportops/confirmJobFromApi", {
-            opsid: arraydata[index].id,
-            line_id: this.lineid,
-            text_data: arraydata[index].input_proceed,
-            // equipments_data:
-          });
+          if (arraydata[index].equipments != "") {
+            console.log("input_proceed", arraydata[index].input_proceed);
+            await this.$store.dispatch("reportops/confirmJobFromApi", {
+              opsid: arraydata[index].id,
+              line_id: this.lineid,
+              text_data: arraydata[index].input_proceed,
+              equipments_data: arraydata[index].equipments,
+            });
+          }
+          this.confirmNotification();
         }
       }
     },
 
     isMenuExpand(index) {
-      const newArr = this.add_open;
+      const newArr = this.add_newdata;
       newArr.forEach((element) => {
         if (element.id === index) {
           if (!element.is_open) {
@@ -297,7 +340,27 @@ export default {
         }
       });
 
-      this.add_open = [...newArr];
+      this.add_newdata = [...newArr];
+    },
+
+    isCencleExpand(index) {
+      const conFirm = confirm("คุณแน่ใจหรือไหมที่จะยกเลิกการซ่อม?");
+      if (conFirm === true) {
+        const newArr2 = this.add_newdata;
+        newArr2.forEach((element) => {
+          if (element.id === index) {
+            if (!element.is_opencencel) {
+              element.is_opencencel = true;
+            } else {
+              element.is_opencencel = false;
+            }
+          } else {
+            element.is_opencencel = false;
+          }
+        });
+
+        this.add_newdata = [...newArr2];
+      }
     },
 
     // ----------------- ยกเลิกการซ่อม -------------
@@ -305,16 +368,16 @@ export default {
     async opencencel() {
       const conFirm = confirm("คุณแน่ใจหรือไหมที่จะยกเลิกการซ่อม?");
       if (conFirm === true) {
-        this.add_open.is_opencencel = true;
+        this.textdelete = true;
       }
     },
     async cenceljob(item) {
       const conFirm = confirm("คุณแน่ใจหรือไหมที่จะยกเลิกการดำเนินการ?");
       if (conFirm === true) {
         await this.$store.dispatch("reportops/deletejobFromApi", {
-          opsid: this.$route.params.id,
+          opsid: item.id,
           line_id: this.lineid,
-          text_data: item,
+          text_data: item.textcencel,
         });
         alert("รับงานเรียบร้อยแล้ว");
       }
@@ -331,9 +394,27 @@ export default {
         duration,
         progress: "auto",
         title: "ไม่พบข้แมูลการแจ้งซ่อม",
-        text: `การดำเนินการอาจมีการเสร็จสิ้น,
+        text: `การดำเนินการเสร็จสิ้น,
             หรือถูกยกเลิกการดำเนินการไปแล้ว`,
       });
+    },
+    confirmNotification(
+      position = "button-center",
+      color = "success",
+      duration = 4000
+    ) {
+      const noti = this.$vs.notification({
+        progress: "auto",
+        color,
+        position,
+        duration,
+        title: "ยืนยันการซ่อมเสร็จสิ้น",
+      });
+    },
+
+    add_equipments(countplus) {
+      countplus = this.count++;
+      console.log(countplus);
     },
   },
 };
@@ -385,26 +466,11 @@ a {
 .iconsdown {
   /* margin-left: 70%; */
   display: flex;
-  justify-content: end;
+  place-content: flex-end;
 }
 
 .vs-button {
   margin: 10px;
 }
-/*      
-    i{
-        margin: 2px;
-      font-size: 1.2rem;
-      transform-origin: center;
-      &.b-r{
-transform: rotate(90deg);
-      },
-        
-      &.t-r
-        transform rotate(0deg)
-      &.t-l
-        transform rotate(-90deg)
-      &.b-l
-        transform rotate(-180deg)
-    } */
 </style>
+

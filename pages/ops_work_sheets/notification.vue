@@ -38,11 +38,13 @@
                           <h3 class="text-lg font-medium">
                             {{ job.type }}
                           </h3>
+
                           <div v-if="job.ops != null">
                             <h3 class="text-lg font-medium ml-3">
                               รับงานโดย {{ job.ops }}
                             </h3>
                           </div>
+
                         </div>
                         <h3 class="text-sm text-gray-500">
                           รายการ : <span>{{ job.text }}</span>
@@ -64,8 +66,6 @@
                               ).status
                             }}
 
-                            <!-- {{ item.status }} -->
-
                             <!-- <span class="ml-2">
                               {{
                                 item.update_at != ""
@@ -73,6 +73,7 @@
                                   : "-"
                               }}
                             </span> -->
+                          
                           </span>
                         </h3>
                       </div>
@@ -103,28 +104,22 @@ export default {
     getallreport() {
       return this.$store.getters["reportops/gettersReport"];
     },
-    statusUpdate() {
-      return this.$store.getters["reportops/gettersUpdateStatus"];
-    },
+
   },
 
   watch: {},
   async created() {
-    await this.viewdataqrcode();
     await this.getreport();
   },
 
   methods: {
+
     manageopspage(opsid) {
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
       }, 1000);
       this.$router.push(`/ops_work_sheets/manageops/${opsid}`);
-    },
-
-    async viewdataqrcode() {
-      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
     },
 
     async getreport() {

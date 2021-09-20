@@ -88,6 +88,7 @@ export default {
         email: "",
       },
       hasVisiblePassword: false,
+      lineid: "demo3",
     };
   },
 
@@ -126,7 +127,8 @@ export default {
       await this.$store.dispatch("login/loginOperator", {
         username: this.user.username,
         password: this.user.password,
-        lineid: this.getUid,
+        // lineid: this.getUid,
+        lineid: this.lineid,
       });
       this.$router.push("/");
     },

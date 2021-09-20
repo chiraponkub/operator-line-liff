@@ -27,7 +27,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="p-4">
           <div class="p-1 mb-2">
             Code Name :
@@ -72,7 +72,7 @@
               />
             </div>
 
-            <div class="flex justify-end">
+            <div class="flex place-content-end">
               <button class="cencel" @click="opencencel()">
                 ยกเลิกการซ่อม
               </button>
@@ -94,7 +94,6 @@
                 <div>{{datatext.status_worksheet_3}}</div>
             </div>
           </div> -->
-          
         </div>
       </div>
     </div>
@@ -124,10 +123,13 @@ export default {
 
   computed: {
     showgetdata() {
-      return this.$store.getters["generate_qr/gettersGetDATABYID"];
+      return this.$store.getters["generate_qr/gettersGetDATABYID2"];
     },
     getreportByid() {
       return this.$store.getters["reportops/gettersReportById"];
+    },
+    gatQrId() {
+      return this.$store.getters["account_operator/gettersQRcodeId"];
     },
   },
 
@@ -160,8 +162,9 @@ export default {
   },
 
   methods: {
+    // Qr_Code ??? 
     async viewdataqrcode() {
-      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
+      await this.$store.dispatch("generate_qr/getDataQrCodeJson2");
     },
 
     async reportByid() {
@@ -200,7 +203,6 @@ export default {
         alert("รับงานเรียบร้อยแล้ว");
       }
     },
-    
   },
 };
 </script>

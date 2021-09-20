@@ -332,35 +332,8 @@
               </div>
             </label>
           </ValidationProvider>
-          <!-- ProductDetails -->
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="required"
-            name="ProductDetails"
-          >
-            <div class="relative flex-auto">
-              <vs-input
-                class="flex justify-cent p-2 mx-2"
-                label-placeholder="ProductDetails"
-                type="text"
-                v-model="dataQrById.info.ProductDetails"
-              />
-            </div>
-            <label class="flex justify-center h-5 mb-2">
-              <div
-                v-if="errors && errors.length > 0"
-                class="flex justify-center text-red-400 texterror text-xs"
-              >
-                <label>{{ errors[0] }}</label>
-              </div>
-            </label>
-          </ValidationProvider>
           <!-- Note -->
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="required"
-            name="Note"
-          >
+          <ValidationProvider v-slot="{ errors }" rules="required" name="Note">
             <div class="relative flex-auto">
               <vs-input
                 class="flex justify-cent p-2 mx-2"
@@ -537,7 +510,6 @@ export default {
     },
   },
 
-  watch: {},
   async created() {
     await this.getTemplate();
     await this.viewdataqrcode();
@@ -559,10 +531,12 @@ export default {
     },
 
     async viewdataqrcode() {
-      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
+      var id = this.$route.params.id;
+      await this.$store.dispatch(`generate_qr/getDataQrCodeJson`, id);
     },
 
     async insertDataOps(datainsert) {
+      console.log("template_name",this.showgetdata.qr_code_id);
       await this.$store.dispatch("generate_qr/insertDataQrCodeFormApi", {
         data: datainsert.info,
         lineid: this.lineid,
@@ -570,12 +544,16 @@ export default {
         qrcodeid: this.showgetdata.qr_code_id,
         ownerids: this.showgetdata.owner_id,
       });
+      console.log("ID : ", this.showgetdata.qr_code_id);
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
       }, 1000);
-      this.$router.push("/");
+      this.$router.push(
+        `/?liff.state=%3Fqr_id%3D${this.showgetdata.qr_code_id}`
+      );
     },
+
   },
 };
 </script>

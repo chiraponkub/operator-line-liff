@@ -1,10 +1,10 @@
-// const accessToken = localStorage.getItem('accessToken')
-
 export const state = () => ({
     users: [],
     userops: {},
     subowner: [],
-    userid: ''
+    userid: '',
+    qr_id: '',
+    datajons: {}
 })
 
 export const mutations = {
@@ -13,13 +13,7 @@ export const mutations = {
             state.users = payload;
         }
     },
-    SET_ACCOUNTOPS(state, payload) {
-        console.log("Dataform API =", payload);
-        if (payload !== null) {
-            state.userops = payload;
-            console.log("state.userops", state.userops);
-        }
-    },
+
     GETSUB_OWNER(state, payload) {
         // console.log("OperatorList", payload.user_account_operator);
         if (payload.user_account_operator !== null) {
@@ -32,30 +26,61 @@ export const mutations = {
 
     SET_UID(state, data) {
         state.userid = data
-    }
+    },
+
+    SET_ACCOUNTOPS(state, data) {
+        // if (data !== null) {
+        state.userops = data;
+        // console.log("Dataform API After =", state.userops);
+        // }
+    },
+    SET_QRCODEID(state, data) {
+        state.qr_id = data
+    },
+    // DATA JSON
+    GET_DATAQRJSON(state, data) {
+        console.log("JSON", data);
+        state.datajons = data
+    },
 }
 export const actions = {
-    getAccountOperator(state, payload) {
-        this.$axios.$get('/api/ops/getAccount').then(res => {
-            state.commit("SET_ACCOUNT", res)
+
+    async getDataQrCodeJson(state, payload) {
+        console.log("DATA2", payload);
+        // qe_id
+        // state.commit("SET_QRCODEID", payload)
+        console.log(payload);
+        await this.$axios.$get(`/api/qr-api/getDataQrCodeJson/${payload}`).then(res => {
+            state.commit("GET_DATAQRJSON", res)
         }).catch(error => {
             console.log(error);
+            console.log("Incorrect information");
         })
     },
 
+    async getQrCodeId(state, payload) {
+        console.log("QR_ID", payload);
+        state.commit("SET_QRCODEID", payload)
+            // qe_id
+            // state.commit("SET_QRCODEID", payload)
+    },
+
     getAccountOps(state, payload) {
-        console.log("LineId", payload);
-        state.commit("SET_UID", payload)
-        this.$axios.$get(`/api/ops/getAccount/${payload}`).then(res => {
-            if (res !== "") {
-                this.$router.push("/"); /// Viewver
+        console.log("line", payload);
+        state.commit("SET_UID", payload.lindeid)
+        this.$axios.$get(`/api/ops/getAccount/${payload.lindeid}`).then(res => {
+            if (res == "") {
+                console.log("IF One");
+                this.$router.push(`/viewer/equipment_v/${payload.qr_id}`); /// Viewver
+            } else if (res != '') {
+                this.$router.push(`/`); /// Ops
             } else {
                 this.$router.push("/login");
             }
             state.commit("SET_ACCOUNTOPS", res)
         }).catch((error) => {
             console.log("ERROR", error);
-            liff.closeWindow()
+            // liff.closeWindow()
         })
     },
 
@@ -69,10 +94,8 @@ export const actions = {
     },
 
     updateAccountFormApi(state, payload) {
-        // console.log("DATA, USERS", payload);
-
         this.$axios.$put(`/owner/updateProfile/${payload.usersid}`, payload.data).then(res => {
-            console.log("Result_Update", res);
+            // console.log("Result_Update", res);
         }).catch(error => {
             alert("Error")
         })
@@ -88,6 +111,10 @@ export const actions = {
 
 export const getters = {
     gettersOperator: (state) => state.users,
+    gettersOps: (state) => state.userops, // getAccountOps
     gettersSubOwner: (state) => state.subowner,
+
     gettersUId: (state) => state.userid,
+    gettersQRcodeId: (state) => state.qr_id, // getqr_id
+    gettersGetDATAQRJSON: (state) => state.datajons
 }

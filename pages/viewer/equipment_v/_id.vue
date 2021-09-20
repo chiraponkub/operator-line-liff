@@ -12,7 +12,6 @@
             </div>
           </div>
         </nav>
-
         <div class="grid lg:grid-cols-3 grid-cols-1 gap-5 p-4">
           <!-- History -->
           <!-- <div class="bg-white shadow sm:rounded-lg oldinfo">
@@ -157,6 +156,12 @@ export default {
     history_info: [],
 
     operator: [],
+
+    data_info: "",
+    template_name: "",
+    qr_code_id: "",
+    code_name: "",
+
   }),
 
   computed: {
@@ -164,7 +169,10 @@ export default {
       return this.$store.getters["generate_qr/gettersGetAllQrCode"];
     },
     showgetdata() {
-      return this.$store.getters["generate_qr/gettersGetDATABYID"];
+      return this.$store.getters["generate_qr/gettersGetDATABYID2"];
+    },
+    gatdataJson() {
+      return this.$store.getters["account_operator/gettersGetDATAQRJSON"];
     },
   },
 
@@ -192,30 +200,25 @@ export default {
     },
   },
   async created() {
-    // await this.getqrcodelist();
     await this.viewdataqrcode();
   },
 
   methods: {
-    logout() {
-      // localStorage.clear();
-      this.$router.go("/login");
-    },
 
     statuspage() {
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
       }, 1000);
-      this.$router.push("/viewer/status");
-
+      this.$router.push(`/viewer/status/${this.$route.params.id}`);
     },
+
     problempage() {
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
       }, 1000);
-      this.$router.push("/viewer/detailsproblem");
+      this.$router.push(`/viewer/detailsproblem/${this.$route.params.id}`);
     },
 
     async toggleModalinsertData(qrlistupdate) {
@@ -243,8 +246,15 @@ export default {
         });
     },
 
+    // async viewdataqrcode() {
+    //   await this.$store.dispatch(`generate_qr/getDataQrCodeJson2`,this.qr_idfix);
+    // },
+
     async viewdataqrcode() {
-      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
+      await this.$store.dispatch(
+        `generate_qr/getDataQrCodeJson2`,
+        this.$route.params.id
+      );
     },
   },
 };

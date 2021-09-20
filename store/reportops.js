@@ -33,15 +33,6 @@ export const actions = {
     getallreport(state, payload) {
         console.log("report", payload);
         this.$axios.$get(`/api/ops/report/${payload}`).then(res => {
-
-            // for (let data = 0; data < res.length; data++) {
-            //     console.log("DATA", res[data].status_worksheet.length);
-
-            //     for (let status = 0; status < res[data].status_worksheet.length; status++) {
-            //         console.log("status", status);
-            //         console.log("status_worksheet", res[data].status_worksheet[status]);
-            //     }
-            // }
             state.commit("SET_REPORT", res)
         }).catch(error => {
             console.log(error);
@@ -76,6 +67,7 @@ export const actions = {
     },
 
     getjobFromApi(state, payload) {
+        console.log(payload);
         this.$axios.$put(`api/ops/worksheet/${payload.opsid}`, {
             line_user_id: payload.line_id
         }).then(res => {

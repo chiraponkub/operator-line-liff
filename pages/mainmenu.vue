@@ -17,7 +17,7 @@
 <script >
 export default {
   data: () => ({
-    lineid: "U47d218c860e35342a979a0224b92ff60",
+    lineid: "demo3",
     data_info: "",
     template_name: "",
     qr_code_id: "",
@@ -80,7 +80,6 @@ export default {
     },
 
     async getaccountOps() {
-      // console.log('Line Id',this.getUid);
       await this.$store.dispatch("account_operator/getAccountOps", {
         lindeid: this.lineid,
         // lindeid: this.getUid,
@@ -95,9 +94,8 @@ export default {
       const params = Object.fromEntries(qrID.entries());
       qr_id = params.qr_id;
 
-      // this.$store.dispatch("account_operator/getQrCodeId", qr_id);
-
-      // console.log("qr_id", qr_id);
+      // await this.$store.dispatch("account_operator/getDataQrCodeJson", qr_id);
+      console.log("qr_id", qr_id);
 
       await this.$axios
         .$get(`/api/qr-api/getDataQrCodeJson/${qr_id}`)
@@ -107,7 +105,6 @@ export default {
           this.template_name = result.template_name;
           this.qr_code_id = result.qr_code_id;
           this.code_name = result.code_name;
-          console.log("this.qr_code_id",this.qr_code_id);
 
           if (this.template_name == "") {
             this.$router.push(`/insertdata/${this.qr_code_id}`);
@@ -116,16 +113,16 @@ export default {
               this.$router.push("/errorpage");
             }
           }
-          // if (res == "") {
-          //   this.$router.push(`/viewer/equipment_v/${payload.qr_id}`);  Viewver
-          // } else if (res != "") {
-          //   this.$router.push(`/?liff.state=%3Fqr_id%3D/${payload.qr_id}`);
-          // } else {
-          //   this.$router.push("/login");
-          // }
+          if (res == "") {
+            this.$router.push(`/viewer/equipment_v/${payload.qr_id}`); /// Viewver
+          } else if (res != "") {
+            this.$router.push(`/?liff.state=%3Fqr_id%3D/${payload.qr_id}`);
+          } else {
+            this.$router.push("/login");
+          }
         })
         .catch((err) => {
-          console.log("Error");
+          console.log("error");
         });
     },
   },

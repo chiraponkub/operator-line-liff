@@ -5,8 +5,8 @@
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <Nuxt-Link to="/viewer/equipment_v">
                 <svg
+                @click="backtohome()"
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
                   height="20"
@@ -19,7 +19,6 @@
                     d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"
                   />
                 </svg>
-              </Nuxt-Link>
             </div>
             <div class="title ml-4">รายงานสถานะ</div>
           </div>
@@ -115,7 +114,7 @@ export default {
 
   computed: {
     getallData() {
-      return this.$store.getters["generate_qr/gettersGetDATABYID"];
+      return this.$store.getters["generate_qr/gettersGetDATABYID2"];
     },
     getDataStatus() {
       return this.$store.getters["reportops/gettersUpdateData"];
@@ -135,23 +134,22 @@ export default {
       setTimeout(() => {
         loading.close();
       }, 1000);
-      this.$router.push("/");
+      this.$router.push(`/viewer/equipment_v/${this.$route.params.id}`);
     },
-
-     openNotification(position = null) {
-          const noti = this.$vs.notification({
-            position,
-            title: 'Documentation Vuesax 4.0+',
-            text: `These documents refer to the latest version of vuesax (4.0+),
-            to see the documents of the previous versions you can do it here 👉 Vuesax3.x`
-          })
-        },
 
     // async getDataupdate() {
     //   await this.$store.dispatch("reportops/getDataUpdateFormApi");
     // },
+
+    // async viewdataqrcode() {
+    //   await this.$store.dispatch(`generate_qr/getDataQrCodeJson`,this.qr_code_id);
+    // },
+
     async viewdataqrcode() {
-      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
+      await this.$store.dispatch(
+        `generate_qr/getDataQrCodeJson2`,
+        this.$route.params.id
+      );
     },
 
     fomatStatusToDetail(status) {

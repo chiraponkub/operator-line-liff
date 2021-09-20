@@ -6,7 +6,8 @@ export const state = () => ({
     getqrcodelist: [],
     getdataqrcodebyidowner: {},
     getdataqrcodebyid: {},
-    databyid: {}
+    databyid: {},
+    databyid2: {}
 })
 
 export const mutations = {
@@ -24,8 +25,12 @@ export const mutations = {
             state.getqrcodelist = []
         }
     },
+    ///// set Qr_ID
     GETDATAQRCODEBYID(state, payload) {
         state.databyid = payload
+    },
+    GETDATAQRCODEBYID2(state, payload) {
+        state.databyid2 = payload
     },
 
     GET_INSERTDATAQRCODEBYIDOWNER(state, payload) {
@@ -42,21 +47,20 @@ export const actions = {
             state.commit("GET_TEMPLATE", res)
         })
     },
-    // getAllQRCodefromApi(state) {
-    //     this.$axios.$get('/owner/getQrCode').then(res => {
-    //         // console.log("getAllQRCodefromApi", res);
-    //         state.commit("GET_QRCODELIST", res)
-    //     }).catch(error => {
-    //         console.log(error);
-    //         console.log("Incorrect information");
-    //     })
-    // },
 
     async getDataQrCodeJson(state, payload) {
-        // 55391398-5dd1-49c2-adfb-a84d78516c16
-        await this.$axios.$get(`api/qr-api/getDataQrCodeJson/9473c2a1-ae0b-4d17-9d24-0c24fe83498d`).then(res => {
-            // console.log("json", res);
+        console.log("DATA3", payload);
+        await this.$axios.$get(`api/qr-api/getDataQrCodeJson/${payload}`).then(res => {
             state.commit("GETDATAQRCODEBYID", res)
+        }).catch(error => {
+            console.log(error);
+            console.log("Incorrect information");
+        })
+    },
+    async getDataQrCodeJson2(state, payload) {
+        console.log("DATA4", payload);
+        await this.$axios.$get(`api/qr-api/getDataQrCodeJson/${payload}`).then(res => {
+            state.commit("GETDATAQRCODEBYID2", res)
         }).catch(error => {
             console.log(error);
             console.log("Incorrect information");
@@ -119,5 +123,6 @@ export const getters = {
     gettersGetAllQrCode: (state) => state.getqrcodelist,
     gettersGetDataQrCodeByidOwner: (state) => state.getdataqrcodebyidowner,
     gettersGetDataQrCodeByid: (state) => state.getdataqrcodebyid,
-    gettersGetDATABYID: (state) => state.databyid
+    gettersGetDATABYID: (state) => state.databyid,
+    gettersGetDATABYID2: (state) => state.databyid2
 }
