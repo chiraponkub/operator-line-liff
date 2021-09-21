@@ -40,6 +40,7 @@ export const actions = {
     },
 
     reportByIdFromApi(state, payload) {
+        console.log("ReportID , Linde", payload);
         const param = {
             report_id: payload.opsid,
             line_user_id: payload.line_id

@@ -7,21 +7,20 @@
             <div class="flex items-center justify-between h-16">
               <div class="flex items-center">
                 <div class="flex-shrink-0"></div>
-                <Nuxt-Link to="/ops_work_sheets/notification">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    fill="currentColor"
-                    class="bi bi-arrow-left-circle text-white"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"
-                    />
-                  </svg>
-                </Nuxt-Link>
+                <svg
+                  @click="backtohome()"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  class="bi bi-arrow-left-circle text-white"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"
+                  />
+                </svg>
                 <div class="title ml-4">Work Sheets</div>
               </div>
             </div>
@@ -104,6 +103,8 @@
 export default {
   data: () => ({
     lineid: "",
+    qr_id: "",
+
     textdelete: false,
     textdata: "",
 
@@ -128,8 +129,8 @@ export default {
     getreportByid() {
       return this.$store.getters["reportops/gettersReportById"];
     },
-    gatQrId() {
-      return this.$store.getters["account_operator/gettersQRcodeId"];
+    getUid() {
+      return this.$store.getters["account_operator/gettersUId"];
     },
   },
 
@@ -151,21 +152,21 @@ export default {
       this.history_info = this.insertdata.history_info;
       this.operator = this.insertdata.ops;
     },
+
     getreportByid(data) {
+      this.qr_id = data.qr_code_id;
+      console.log("QR_ID",this.qr_id);
       this.datatext = JSON.parse(JSON.stringify(data));
+      this.viewdataqrcode()
     },
-    
+
     async getUid(data) {
       this.lineid = data;
+      console.log("LINE", this.lineid);
       await this.reportByid();
       await this.getjob();
       await this.cenceljob();
     },
-  },
-
-  async created() {
-    await this.viewdataqrcode();
-    await this.reportByid();
   },
 
   methods: {
@@ -173,22 +174,35 @@ export default {
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
-        // this.$router.push({
-        //   path: "/",
-        //   query: { qr_id: this.$route.params.id },
-        // });
-        this.$router.push(
-          `/ops_work_sheets/notification/${this.$route.params.id}`
-        );
+        // this.$router.push(
+        //   `/ops_work_sheets/notification/${this.$route.params.id}`
+        // );
+        this.$router.push(`/ops_work_sheets/notification`);
       }, 1000);
     },
 
     // Qr_Code ???
     async viewdataqrcode() {
-      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
+      await this.$store
+        .dispatch("generate_qr/getDataQrCodeJson",this.qr_id)
+        .then((res) => {})
+        .catch((err) => {
+          const position = "top-center";
+          const color = "danger";
+          const duration = 6000;
+          this.$vs.notification({
+            position,
+            color,
+            duration,
+            progress: "auto",
+            title: "พบข้อผิดพลาด",
+            text: err,
+          });
+        });
     },
 
     async reportByid() {
+      console.log("reportByid");
       await this.$store.dispatch("reportops/reportByIdFromApi", {
         opsid: this.$route.params.id,
         line_id: this.lineid,
@@ -224,7 +238,6 @@ export default {
         alert("รับงานเรียบร้อยแล้ว");
       }
     },
-
   },
 };
 </script>

@@ -51,27 +51,16 @@
                           <!-- {{job.status_worksheet.length}} -->
 
                           <!-- Satatus -->
+                          <!-- {{ fomatStatusToDetail(job.status_worksheet) }} -->
+                          <!-- {{job.status_worksheet[1]}} -->
                           <span
-                            class="font-bold"
-                            v-for="(item, index) in job.status_worksheet"
-                            :key="index"
+                            :class="`font-bold ${
+                              fomatStatusToDetail(job.status_worksheet).text
+                            }`"
                           >
-                            <!-- {{item}}
-                          {{index}} -->
                             {{
-                              fomatStatusToDetail(
-                                item.status,
-                                job.status_worksheet.length
-                              ).status
+                              fomatStatusToDetail(job.status_worksheet).detail
                             }}
-
-                            <!-- <span class="ml-2">
-                              {{
-                                item.update_at != ""
-                                  ? $moment(item.update_at).format("DD/MM/YYYY")
-                                  : "-"
-                              }}
-                            </span> -->
                           </span>
                         </h3>
                       </div>
@@ -124,8 +113,8 @@ export default {
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
+        this.$router.push(`/ops_work_sheets/manageops/${opsid}`);
       }, 1000);
-      this.$router.push(`/ops_work_sheets/manageops/${opsid}`);
     },
 
     async getreport() {
@@ -134,19 +123,27 @@ export default {
 
     // Status symbol
 
-    fomatStatusToDetail(status, lastindex) {
+    fomatStatusToDetail(status_worksheet) {
       // console.log("Last Index", lastindex);
       // console.log("Status", status);
+      const index = status_worksheet.length - 1;
+      console.log(status_worksheet[index].status);
+      const status = status_worksheet[index].status;
 
-      if (status == lastindex) {
+      if (status == "รอดำเนิดการ") {
         return {
-          status: status.length,
+          detail: status,
           text: "text-blue-500",
+        };
+      } else if (status == "กำลังดำเนินการ") {
+        return {
+          detail: status,
+          text: "text-yellow-500",
         };
       } else {
         return {
-          status: status,
-          text: "text-red-500",
+          detail: "เกิดข้อผิดพลาด",
+          text: "text-yellow-500",
         };
       }
     },
