@@ -132,33 +132,6 @@
           <div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <div class="px-4 py-5 sm:px-6 grid grid-cols-2 gap-x-3 gap-y-3">
               <h3 class="text-lg font-medium text-gray-900">Information</h3>
-
-              <!-- button insert, update -->
-              <!-- <div class="flex">
-                <vs-button color="messenger" @click="insertpage()">
-                  Insert
-                </vs-button>
-
-                <div>
-                  <vs-button color="medium" @click="updatepage()">
-                    Update
-                  </vs-button>
-                </div>
-              </div> -->
-              <!-- <div class="flex">
-                <Nuxt-Link to="/insertdata">
-                  <vs-button color="messenger" @click="toggleModalinsertData()">
-                  Insert
-                </vs-button>
-                </Nuxt-Link>
-                
-
-                <div>
-                  <vs-button color="medium" @click="toggleModalUpdateData()">
-                    Update
-                  </vs-button>
-                </div>
-              </div> -->
             </div>
 
             <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
@@ -272,10 +245,10 @@ export default {
       text: "",
       type: "",
       qr_code_id: "",
-      status_worksheet_1: {
-        status: "",
-        update_at: "",
-      },
+      // status_worksheet_1: {
+      //   status: "",
+      //   update_at: "",
+      // },
     },
   }),
 
@@ -288,6 +261,9 @@ export default {
     },
     gatQrId() {
       return this.$store.getters["account_operator/gettersQRcodeId"];
+    },
+    urlPath() {
+      return window.location.href;
     },
   },
 
@@ -326,59 +302,51 @@ export default {
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
-      }, 1000);
-      this.$router.push(`/?liff.state=%3Fqr_id%3D${this.$route.params.id}`);
-    },
-
-    logout() {
-      // localStorage.clear();
-      this.$router.go("/login");
-    },
-    insertpage() {
-      const loading = this.$vs.loading();
-      setTimeout(() => {
-        loading.close();
-      }, 1000);
-      this.$router.push("/insertdata");
-    },
-    updatepage() {
-      const loading = this.$vs.loading();
-      setTimeout(() => {
-        loading.close();
-      }, 1000);
-      this.$router.push("/updatedata");
-    },
-
-    async toggleModalinsertData(qrlistupdate) {
-      // console.log("InsrertOwner",qrlistupdate);
-      this.getdatabyid = qrlistupdate.qr_code_id;
-      this.getownerid = qrlistupdate.owner_id;
-      await this.$store
-        .dispatch("generate_qr/insertDataQrCodeByidOwner", qrlistupdate)
-        .then(() => {
-          const dataQrcodebyid = JSON.parse(
-            JSON.stringify(
-              this.$store.getters["generate_qr/gettersGetDataQrCodeByidOwner"]
-            )
-          );
-          this.dataQrById.info = {
-            cpu: dataQrcodebyid.cpu,
-            ram: dataQrcodebyid.ram,
-            case: dataQrcodebyid.case,
-            hard_disk: dataQrcodebyid.hard_disk,
-            main_boar: dataQrcodebyid.main_boar,
-            graphic_card: dataQrcodebyid.graphic_card,
-            power_supply: dataQrcodebyid.power_supply,
-          };
-          this.showModalInsert = !this.showModalInsert;
+        this.$router.push({
+          path: "/",
+          query: { qr_id: this.$route.params.id },
         });
+      }, 1000);
+      // console.log("QUERY", this.$route.query.qr_id);
+      // this.$router.push(`/?liff.state=%3Fqr_id%3D${this.$route.params.id}`);
     },
+
+    // logout() {
+    //   localStorage.clear();
+    //   this.$router.go("/login");
+    // },
+
+    // insertpage() {
+    //   const loading = this.$vs.loading();
+    //   setTimeout(() => {
+    //     loading.close();
+    //   }, 1000);
+    //   this.$router.push("/insertdata");
+    // },
+    // updatepage() {
+    //   const loading = this.$vs.loading();
+    //   setTimeout(() => {
+    //     loading.close();
+    //   }, 1000);
+    //   this.$router.push("/updatedata");
+    // },
 
     async viewdataqrcode() {
-      await this.$store.dispatch(
-        `generate_qr/getDataQrCodeJson`,
-        this.$route.params.id
-      );
+      await this.$store
+        .dispatch(`generate_qr/getDataQrCodeJson`, this.$route.params.id)
+        .catch((err) => {
+          const position = "top-center";
+          const color = "danger";
+          const duration = 6000;
+          this.$vs.notification({
+            position,
+            color,
+            duration,
+            progress: "auto",
+            title: "พบข้อผิดพลาด",
+            text: err,
+          });
+        });
     },
   },
 };

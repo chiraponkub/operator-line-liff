@@ -375,7 +375,7 @@ export default {
     limit: 5,
     showModal: false,
     showModalInsert: false,
-    lineid: "demo3",
+    lineid: "U47d218c860e35342a979a0224b92ff60",
 
     update: {
       id: "",
@@ -449,11 +449,16 @@ export default {
 
   methods: {
     backtohome() {
+      console.log("this.$route.params.id", this.$route.params.id);
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
+        this.$router.push({
+          path: "/",
+          query: { qr_id: this.$route.params.id },
+        });
       }, 1000);
-      this.$router.push(`/?liff.state=%3Fqr_id%3D${this.$route.params.id}`);
+      // this.$router.push(`/?qr_id=${this.$route.params.id}`);
     },
 
     async getdatajson() {
@@ -467,17 +472,29 @@ export default {
       await this.$store
         .dispatch("generate_qr/updateDataQrCode", {
           dataupdate: updateinfo.info,
-          // line_user_id: this.getUid,
           line_user_id: this.lineid,
-          qrcodeid: this.insertdata.qr_code_id,
+          qrcodeid: this.$route.params.id,
           owner_id: this.insertdata.owner_id,
         })
         .then(() => {
           const loading = this.$vs.loading();
           setTimeout(() => {
             loading.close();
+            this.$router.push(`/ops/equipment/${this.$route.params.id}`);
           }, 1000);
-          this.$router.push("/ops/equipment");
+        })
+        .catch((error) => {
+          const position = "top-center";
+          const color = "danger";
+          const duration = 6000;
+          this.$vs.notification({
+            position,
+            color,
+            duration,
+            progress: "auto",
+            title: "พบข้อผิดพลาด",
+            text: error,
+          });
         });
     },
   },

@@ -160,9 +160,7 @@ export default {
       setTimeout(() => {
         loading.close();
       }, 1000);
-      this.$router.push(
-        `/viewer/equipment_v/${this.$route.params.id}`
-      );
+      this.$router.push(`/viewer/equipment_v/${this.$route.params.id}`);
     },
 
     // sendproblem() {
@@ -204,8 +202,8 @@ export default {
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
+        this.$router.push(`/viewer/status/${this.$route.params.id}`);
       }, 1000);
-      this.$router.push(`/viewer/status/${this.$route.params.id}`);
     },
   },
 };

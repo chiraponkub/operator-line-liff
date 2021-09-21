@@ -152,24 +152,23 @@ export default {
       ProductDetails: "",
       SerialNumber: "",
       Note: "",
+      ProductInsurance: "",
+      PurchaseDate: "",
+      StartUsingTheProduct: "",
+      EndUsingTheProduct: "",
     },
     history_info: [],
 
     operator: [],
 
-    data_info: "",
-    template_name: "",
-    qr_code_id: "",
-    code_name: "",
-
   }),
 
   computed: {
-    showgetallqrcode() {
-      return this.$store.getters["generate_qr/gettersGetAllQrCode"];
-    },
+    // showgetallqrcode() {
+    //   return this.$store.getters["generate_qr/gettersGetAllQrCode"];
+    // },
     showgetdata() {
-      return this.$store.getters["generate_qr/gettersGetDATABYID2"];
+      return this.$store.getters["generate_qr/gettersGetDATABYID"];
     },
     gatdataJson() {
       return this.$store.getters["account_operator/gettersGetDATAQRJSON"];
@@ -177,11 +176,10 @@ export default {
   },
 
   watch: {
-    showgetallqrcode(data) {
-      this.getterallqrcode = JSON.parse(JSON.stringify(data));
-    },
+    // showgetallqrcode(data) {
+    //   this.getterallqrcode = JSON.parse(JSON.stringify(data));
+    // },
     showgetdata(data) {
-      console.log("DAta", data);
       this.insertdata = JSON.parse(JSON.stringify(data));
 
       this.data_info = {
@@ -199,12 +197,12 @@ export default {
       this.operator = this.insertdata.ops;
     },
   },
+
   async created() {
     await this.viewdataqrcode();
   },
 
   methods: {
-
     statuspage() {
       const loading = this.$vs.loading();
       setTimeout(() => {
@@ -221,44 +219,27 @@ export default {
       this.$router.push(`/viewer/detailsproblem/${this.$route.params.id}`);
     },
 
-    async toggleModalinsertData(qrlistupdate) {
-      // console.log("InsrertOwner",qrlistupdate);
-      this.getdatabyid = qrlistupdate.qr_code_id;
-      this.getownerid = qrlistupdate.owner_id;
-      await this.$store
-        .dispatch("generate_qr/insertDataQrCodeByidOwner", qrlistupdate)
-        .then(() => {
-          const dataQrcodebyid = JSON.parse(
-            JSON.stringify(
-              this.$store.getters["generate_qr/gettersGetDataQrCodeByidOwner"]
-            )
-          );
-          this.dataQrById.info = {
-            cpu: dataQrcodebyid.cpu,
-            ram: dataQrcodebyid.ram,
-            case: dataQrcodebyid.case,
-            hard_disk: dataQrcodebyid.hard_disk,
-            main_boar: dataQrcodebyid.main_boar,
-            graphic_card: dataQrcodebyid.graphic_card,
-            power_supply: dataQrcodebyid.power_supply,
-          };
-          this.showModalInsert = !this.showModalInsert;
-        });
-    },
-
-    // async viewdataqrcode() {
-    //   await this.$store.dispatch(`generate_qr/getDataQrCodeJson2`,this.qr_idfix);
-    // },
-
     async viewdataqrcode() {
-      await this.$store.dispatch(
-        `generate_qr/getDataQrCodeJson2`,
-        this.$route.params.id
-      );
+      await this.$store
+        .dispatch(`generate_qr/getDataQrCodeJson`, this.$route.params.id)
+        .catch((err) => {
+          const position = "top-center";
+          const color = "danger";
+          const duration = 6000;
+          this.$vs.notification({
+            position,
+            color,
+            duration,
+            progress: "auto",
+            title: "พบข้อผิดพลาด",
+            text: err,
+          });
+        });
     },
   },
 };
 </script>
+
 <style >
 .title {
   color: aliceblue;

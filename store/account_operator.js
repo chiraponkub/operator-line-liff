@@ -45,16 +45,28 @@ export const mutations = {
 }
 export const actions = {
 
-    async getDataQrCodeJson(state, payload) {
-        console.log("DATA2", payload);
-        // qe_id
-        // state.commit("SET_QRCODEID", payload)
-        console.log(payload);
-        await this.$axios.$get(`/api/qr-api/getDataQrCodeJson/${payload}`).then(res => {
-            state.commit("GET_DATAQRJSON", res)
-        }).catch(error => {
-            console.log(error);
-            console.log("Incorrect information");
+    // async getDataQrCodeJson(state, payload) {
+    //     console.log("DATA2", payload);
+    //     qe_id
+    //     state.commit("SET_QRCODEID", payload)
+    //     console.log(payload);
+    //     await this.$axios.$get(`/api/qr-api/getDataQrCodeJson/${payload}`).then(res => {
+    //         state.commit("GET_DATAQRJSON", res)
+    //     }).catch(error => {
+    //         console.log(error);
+    //         console.log("Incorrect information");
+    //     })
+    // },
+    getDataQrCodeJson(state, payload) {
+        return new Promise(async(resolve, reject) => {
+            await this.$axios.$get(`/api/qr-api/getDataQrCodeJson/${payload}`).then(res => {
+                state.commit("GET_DATAQRJSON", res)
+                resolve(res)
+            }).catch(error => {
+                reject(error)
+                console.log(error);
+                console.log("Incorrect information");
+            })
         })
     },
 
@@ -67,21 +79,29 @@ export const actions = {
 
     getAccountOps(state, payload) {
         console.log("line", payload);
-        state.commit("SET_UID", payload.lindeid)
+        // state.commit("SET_UID", payload.lindeid)
         this.$axios.$get(`/api/ops/getAccount/${payload.lindeid}`).then(res => {
+            console.log("RES", res);
             if (res == "") {
-                console.log("IF One");
+                console.log("Viewer");
                 this.$router.push(`/viewer/equipment_v/${payload.qr_id}`); /// Viewver
             } else if (res != '') {
-                this.$router.push(`/`); /// Ops
+                console.log("Index");
+                this.$router.push(`/?liff.state=%3Fqr_id%3D${payload.qr_id}`); /// Ops
+                // this.$router.push(`/mainmenu/${payload.qr_id}`); /// Ops
             } else {
+                console.log("Login");
                 this.$router.push("/login");
             }
             state.commit("SET_ACCOUNTOPS", res)
         }).catch((error) => {
             console.log("ERROR", error);
-            // liff.closeWindow()
         })
+    },
+
+    getAccountlineId(state, payload) {
+        // console.log("lineQR", payload);
+        state.commit("SET_UID", payload)
     },
 
     getSubOwner(state, payload) {

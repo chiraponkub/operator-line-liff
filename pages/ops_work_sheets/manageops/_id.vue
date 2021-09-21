@@ -103,7 +103,7 @@
 <script >
 export default {
   data: () => ({
-    lineid: "demo3",
+    lineid: "",
     textdelete: false,
     textdata: "",
 
@@ -123,7 +123,7 @@ export default {
 
   computed: {
     showgetdata() {
-      return this.$store.getters["generate_qr/gettersGetDATABYID2"];
+      return this.$store.getters["generate_qr/gettersGetDATABYID"];
     },
     getreportByid() {
       return this.$store.getters["reportops/gettersReportById"];
@@ -154,6 +154,13 @@ export default {
     getreportByid(data) {
       this.datatext = JSON.parse(JSON.stringify(data));
     },
+    
+    async getUid(data) {
+      this.lineid = data;
+      await this.reportByid();
+      await this.getjob();
+      await this.cenceljob();
+    },
   },
 
   async created() {
@@ -162,9 +169,23 @@ export default {
   },
 
   methods: {
-    // Qr_Code ??? 
+    backtohome() {
+      const loading = this.$vs.loading();
+      setTimeout(() => {
+        loading.close();
+        // this.$router.push({
+        //   path: "/",
+        //   query: { qr_id: this.$route.params.id },
+        // });
+        this.$router.push(
+          `/ops_work_sheets/notification/${this.$route.params.id}`
+        );
+      }, 1000);
+    },
+
+    // Qr_Code ???
     async viewdataqrcode() {
-      await this.$store.dispatch("generate_qr/getDataQrCodeJson2");
+      await this.$store.dispatch("generate_qr/getDataQrCodeJson");
     },
 
     async reportByid() {
@@ -203,6 +224,7 @@ export default {
         alert("รับงานเรียบร้อยแล้ว");
       }
     },
+
   },
 };
 </script>

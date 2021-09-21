@@ -266,8 +266,12 @@ export default {
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
+        this.$router.push({
+          path: "/",
+          query: { qr_id: this.$route.params.id },
+        });
       }, 1000);
-      this.$router.push(`/?liff.state=%3Fqr_id%3D${this.$route.params.id}`);
+      // this.$router.push(`/?liff.state=%3Fqr_id%3D${this.$route.params.id}`);
     },
 
     insertpage() {

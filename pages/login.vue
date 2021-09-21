@@ -88,7 +88,7 @@ export default {
         email: "",
       },
       hasVisiblePassword: false,
-      lineid: "demo3",
+      lineid: "",
     };
   },
 
@@ -114,6 +114,11 @@ export default {
         this.$router.go("/");
       }
     },
+
+    async getUid(data) {
+      this.lineid = data;
+      await this.login();
+    },
   },
 
   created() {},
@@ -124,13 +129,17 @@ export default {
       if (!sus) {
         // alert("Username or password Incorrect");
       }
-      await this.$store.dispatch("login/loginOperator", {
-        username: this.user.username,
-        password: this.user.password,
-        // lineid: this.getUid,
-        lineid: this.lineid,
-      });
-      this.$router.push("/");
+      await this.$store
+        .dispatch("login/loginOperator", {
+          username: this.user.username,
+          password: this.user.password,
+          lineid: this.lineid,
+        })
+        .then(() => {
+          alert("Login Success");
+          liff.closeWindow();
+        });
+      // this.$router.push("/");
     },
   },
 };

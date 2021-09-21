@@ -504,7 +504,6 @@ export default {
     templatelist() {
       return this.$store.getters["generate_qr/gettersTemplates"];
     },
-
     showgetdata() {
       return this.$store.getters["generate_qr/gettersGetDATABYID"];
     },
@@ -520,8 +519,11 @@ export default {
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
+        this.$router.push({
+          path: "/",
+          query: { qr_id: this.$route.params.id },
+        });
       }, 1000);
-      this.$router.push("/");
     },
 
     async getTemplate() {
@@ -535,8 +537,27 @@ export default {
       await this.$store.dispatch(`generate_qr/getDataQrCodeJson`, id);
     },
 
+    // async insertDataOps(datainsert) {
+    //   console.log("template_name", this.showgetdata.qr_code_id);
+    //   await this.$store.dispatch("generate_qr/insertDataQrCodeFormApi", {
+    //     data: datainsert.info,
+    //     lineid: this.lineid,
+    //     templatename: datainsert.template_name,
+    //     qrcodeid: this.showgetdata.qr_code_id,
+    //     ownerids: this.showgetdata.owner_id,
+    //   });
+    //   console.log("ID : ", this.showgetdata.qr_code_id);
+    //   const loading = this.$vs.loading();
+    //   setTimeout(() => {
+    //     loading.close();
+    //     this.$router.push(
+    //       `/?liff.state=%3Fqr_id%3D${this.showgetdata.qr_code_id}`
+    //     );
+    //   }, 1000);
+    // },
+
     async insertDataOps(datainsert) {
-      console.log("template_name",this.showgetdata.qr_code_id);
+      console.log("template_name", this.showgetdata.qr_code_id);
       await this.$store.dispatch("generate_qr/insertDataQrCodeFormApi", {
         data: datainsert.info,
         lineid: this.lineid,
@@ -545,15 +566,19 @@ export default {
         ownerids: this.showgetdata.owner_id,
       });
       console.log("ID : ", this.showgetdata.qr_code_id);
+      
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
+        this.$router.push({
+          path: "/",
+          query: { qr_id: this.$route.params.id },
+        });
+        // this.$router.push(
+        //   `/?liff.state=%3Fqr_id%3D${this.showgetdata.qr_code_id}`
+        // );
       }, 1000);
-      this.$router.push(
-        `/?liff.state=%3Fqr_id%3D${this.showgetdata.qr_code_id}`
-      );
     },
-
   },
 };
 </script>

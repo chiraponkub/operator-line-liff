@@ -44,7 +44,6 @@
                               รับงานโดย {{ job.ops }}
                             </h3>
                           </div>
-
                         </div>
                         <h3 class="text-sm text-gray-500">
                           รายการ : <span>{{ job.text }}</span>
@@ -73,7 +72,6 @@
                                   : "-"
                               }}
                             </span> -->
-                          
                           </span>
                         </h3>
                       </div>
@@ -94,7 +92,8 @@
 <script >
 export default {
   data: () => ({
-    lineid: "demo3",
+    // lineid: "demo3",
+    lineid: "",
   }),
 
   computed: {
@@ -104,16 +103,23 @@ export default {
     getallreport() {
       return this.$store.getters["reportops/gettersReport"];
     },
-
+    getUid() {
+      return this.$store.getters["account_operator/gettersUId"];
+    },
   },
 
-  watch: {},
+  watch: {
+    async getUid(data) {
+      this.lineid = data;
+      await this.getreport();
+    },
+  },
+
   async created() {
-    await this.getreport();
+    // await this.getreport();
   },
 
   methods: {
-
     manageopspage(opsid) {
       const loading = this.$vs.loading();
       setTimeout(() => {
@@ -126,9 +132,11 @@ export default {
       await this.$store.dispatch("reportops/getallreport", this.lineid);
     },
 
+    // Status symbol
+
     fomatStatusToDetail(status, lastindex) {
-      // console.log("Last Index",lastindex);
-      // console.log("Status",status);
+      // console.log("Last Index", lastindex);
+      // console.log("Status", status);
 
       if (status == lastindex) {
         return {

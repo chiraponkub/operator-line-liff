@@ -50,18 +50,25 @@ export const actions = {
 
     async getDataQrCodeJson(state, payload) {
         console.log("DATA3", payload);
-        await this.$axios.$get(`api/qr-api/getDataQrCodeJson/${payload}`).then(res => {
-            state.commit("GETDATAQRCODEBYID", res)
-        }).catch(error => {
-            console.log(error);
-            console.log("Incorrect information");
+        return new Promise(async(resolve, reject) => {
+            await this.$axios.$get(`api/qr-api/getDataQrCodeJson/${payload}`).then(res => {
+                state.commit("GETDATAQRCODEBYID", res)
+                resolve(res)
+            }).catch(error => {
+                reject(error)
+                console.log(error);
+                console.log("Incorrect information");
+            })
         })
+
+
     },
     async getDataQrCodeJson2(state, payload) {
         console.log("DATA4", payload);
         await this.$axios.$get(`api/qr-api/getDataQrCodeJson/${payload}`).then(res => {
             state.commit("GETDATAQRCODEBYID2", res)
         }).catch(error => {
+            alert(error)
             console.log(error);
             console.log("Incorrect information");
         })
@@ -69,20 +76,25 @@ export const actions = {
 
     async insertDataQrCodeFormApi(state, payload) {
         // console.log("insertData", payload);
-        await this.$axios.$post("/api/ops/insertDataQrCode", {
-            owner_id: payload.ownerids,
-            line_user_id: payload.lineid,
-            qr_code_id: payload.qrcodeid,
-            info: payload.data,
-            template_name: payload.templatename
-        }).then(res => {
-            // console.log("DataQrCodeByid", res);
-            // state.commit("GET_INSERTDATAQRCODEBYIDOWNER", res)
-        }).catch(error => {
-            console.log(error);
-            console.log("Insert information");
-            alert("")
+        return new Promise(async(resolve, reject) => {
+            await this.$axios.$post("/api/ops/insertDataQrCode", {
+                owner_id: payload.ownerids,
+                line_user_id: payload.lineid,
+                qr_code_id: payload.qrcodeid,
+                info: payload.data,
+                template_name: payload.templatename
+            }).then(res => {
+                resolve(res)
+                    // console.log("DataQrCodeByid", res);
+                    // state.commit("GET_INSERTDATAQRCODEBYIDOWNER", res)
+            }).catch(error => {
+                reject(res)
+                console.log(error);
+                console.log("Insert information");
+                alert("error")
+            })
         })
+
     },
 
     async insertDataQrCodeByidOwner(state, payload) {
@@ -92,15 +104,24 @@ export const actions = {
         }).catch(error => {
             console.log(error);
             console.log("Incorrect information");
+            alert("error")
         })
     },
 
     async updateDataQrCode(state, payload) {
-        await this.$axios.$put("/api/ops/updateDataQrCode", {
-            owner_id: payload.owner_id,
-            line_user_id: payload.line_user_id,
-            qr_code_id: payload.qrcodeid,
-            info: payload.dataupdate,
+        return new Promise(async(resolve, reject) => {
+            await this.$axios.$put("/api/ops/updateDataQrCode", {
+                owner_id: payload.owner_id,
+                line_user_id: payload.line_user_id,
+                qr_code_id: payload.qrcodeid,
+                info: payload.dataupdate,
+            }).then((res) => {
+                resolve(res)
+            }).catch(error => {
+                reject(error)
+                console.log(error);
+                console.log("Incorrect information");
+            })
         })
     },
 

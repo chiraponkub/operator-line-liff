@@ -428,7 +428,7 @@ export default {
   async created() {
     // await this.getTemplate();
   },
-
+  
   methods: {
     backtohome() {
       const loading = this.$vs.loading();
