@@ -1,4 +1,4 @@
-FROM node
+FROM node:14
 
 RUN mkdir -p /src
 WORKDIR /src
@@ -9,8 +9,10 @@ RUN yarn install
 
 # build necessary, even if no static files are needed,
 # since it builds the server as well
+# RUN yarn build
 
-EXPOSE 3001
+# expose 5000 on container
+EXPOSE 12000
 
 # set app serving to permissive / assigned
 ENV NUXT_HOST=0.0.0.0
@@ -18,4 +20,4 @@ ENV NUXT_HOST=0.0.0.0
 ENV NUXT_PORT=12000
 
 # start the app
-CMD [ "yarn", "dev", "--port", "12000"]
+CMD ["/bin/bash","-c","yarn build && yarn start --port 12000" ]

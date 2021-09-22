@@ -117,7 +117,6 @@ export default {
 
     async getUid(data) {
       this.lineid = data;
-      await this.login();
     },
   },
 
@@ -125,10 +124,10 @@ export default {
 
   methods: {
     async login() {
-      const sus = await this.$refs.form.validate();
-      if (!sus) {
-        // alert("Username or password Incorrect");
-      }
+      // const sus = await this.$refs.form.validate();
+      // if (!sus) {
+      //   // alert("Username or password Incorrect");
+      // }
       await this.$store
         .dispatch("login/loginOperator", {
           username: this.user.username,
@@ -138,6 +137,8 @@ export default {
         .then(() => {
           alert("Login Success");
           liff.closeWindow();
+        }).catch((err)=>{
+          alert(err.message)
         });
       // this.$router.push("/");
     },

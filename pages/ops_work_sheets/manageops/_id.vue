@@ -49,7 +49,12 @@
             </div>
           </div>
 
-          <div class="flex justify-end mt-3">
+          <div
+            class="flex justify-end mt-3"
+            v-if="
+              datatext.status_worksheet && datatext.status_worksheet.length < 2
+            "
+          >
             <vs-button color="medium" @click="getjob()">รับงาน</vs-button>
           </div>
 
@@ -155,18 +160,25 @@ export default {
 
     getreportByid(data) {
       this.qr_id = data.qr_code_id;
-      console.log("QR_ID",this.qr_id);
+      console.log("QR_ID", this.qr_id);
       this.datatext = JSON.parse(JSON.stringify(data));
-      this.viewdataqrcode()
+      this.viewdataqrcode();
     },
 
     async getUid(data) {
       this.lineid = data;
       console.log("LINE", this.lineid);
       await this.reportByid();
-      await this.getjob();
-      await this.cenceljob();
+      // await this.getjob();
+      // await this.cenceljob();
     },
+  },
+
+  mounted() {
+    this.lineid = this.getUid;
+    if (this.getUid) {
+      this.reportByid();
+    }
   },
 
   methods: {
@@ -184,7 +196,7 @@ export default {
     // Qr_Code ???
     async viewdataqrcode() {
       await this.$store
-        .dispatch("generate_qr/getDataQrCodeJson",this.qr_id)
+        .dispatch("generate_qr/getDataQrCodeJson", this.qr_id)
         .then((res) => {})
         .catch((err) => {
           const position = "top-center";
@@ -217,6 +229,7 @@ export default {
           line_id: this.lineid,
         });
         alert("รับงานเรียบร้อยแล้ว");
+        this.reportByid();
       }
     },
 
@@ -236,6 +249,7 @@ export default {
           text_data: cenceldata,
         });
         alert("รับงานเรียบร้อยแล้ว");
+        this.reportByid();
       }
     },
   },

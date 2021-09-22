@@ -12,7 +12,6 @@
             </div>
           </div>
         </nav>
-
         <div class="p-4">
           <div>
             <div v-for="(job, index) in getallreport" :key="index">
@@ -99,13 +98,17 @@ export default {
 
   watch: {
     async getUid(data) {
+      console.log("data",data);
       this.lineid = data;
       await this.getreport();
     },
   },
 
-  async created() {
-    // await this.getreport();
+  mounted() {
+    this.lineid = this.getUid
+    if (this.getUid) {
+      this.getreport();
+    }
   },
 
   methods: {
@@ -124,30 +127,27 @@ export default {
     // Status symbol
 
     fomatStatusToDetail(status_worksheet) {
-      const index = 0;
-      if (status_worksheet.length > 1) {
+      let index = 0;
+      if (status_worksheet && status_worksheet.length > 1) {
         index = status_worksheet.length - 1;
-        console.log(status_worksheet[index].status);
-        const status = status_worksheet[index].status;
-
-        if (status == "รอดำเนิดการ") {
-          return {
-            detail: status,
-            text: "text-blue-500",
-          };
-        } else if (status == "กำลังดำเนินการ") {
-          return {
-            detail: status,
-            text: "text-yellow-500",
-          };
-        } else {
-          return {
-            detail: "เกิดข้อผิดพลาด",
-            text: "text-yellow-500",
-          };
-        }
       }
-
+      const status = status_worksheet[index].status;
+      if (status == "รอดำเนิดการ") {
+        return {
+          detail: status,
+          text: "text-blue-500",
+        };
+      } else if (status == "กำลังดำเนินการ") {
+        return {
+          detail: status,
+          text: "text-yellow-500",
+        };
+      } else {
+        return {
+          detail: "เกิดข้อผิดพลาด",
+          text: "text-yellow-500",
+        };
+      }
     },
   },
 };

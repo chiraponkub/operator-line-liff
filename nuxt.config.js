@@ -1,7 +1,12 @@
 export default {
     ssr: false,
-
+    env: {
+      BASE_URL: process.env.BASE_URL,
+  },
     // Global page headers: https://go.nuxtjs.dev/config-head
+
+
+
 
     head: {
         title: 'CustomerLineLiff',
@@ -9,7 +14,7 @@ export default {
             lang: 'en'
         },
         script: [{
-            src: "https://static.line-scdn.net/liff/edge/2.1/sdk.js"
+           src: 'https://static.line-scdn.net/liff/edge/versions/2.7.0/sdk.js'
         }],
         meta: [
             { charset: 'utf-8' },
@@ -61,8 +66,9 @@ export default {
         base: '/qr/'
     },
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
-    axios: { baseURL: 'https://1117-125-25-17-50.ngrok.io' },
-
+    axios: {
+      baseUrl: process.env.BASE_URL
+    },
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
         transpile: ['vee-validate'],

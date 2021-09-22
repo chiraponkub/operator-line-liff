@@ -6,9 +6,18 @@
 
 <script>
 export default {
-  created() {
+  data() {
+    return {
+      userId : null,
+      displayName : null,
+      statusMessage : null,
+      pictureUrl : null,
+      email : null,
+    }
+  },
+  beforeCreate() {
     liff.init(
-      { liffId: "1656385614-YE6rXz2M" },
+      { liffId: "1656385614-yJlJEKNL" },
       () => {
         if (liff.isLoggedIn()) {
           liff
@@ -19,23 +28,17 @@ export default {
               this.statusMessage = profile.statusMessage;
               this.pictureUrl = profile.pictureUrl;
               this.email = liff.getDecodedIDToken().email;
-              console.log("profile", profile);
-              this.getAccountline();
+              this.$store.dispatch("account_operator/getAccountlineId", profile.userId)
             })
             .catch((err) => console.error(err));
-        } else {
+        }else{
           liff.login();
         }
       },
       (err) => console.error(err.code, error.message)
     );
     console.log("LIFF", liff);
-  },
-
-  methods: {
-    async getAccountline() {
-      await this.$store.dispatch("account_operator/getAccountlineId", this.userId)
-    },
+    console.log("beforeCreate Test",this.userId);
   },
 };
 </script>

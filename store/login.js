@@ -56,22 +56,23 @@ export const actions = {
         })
     },
 
-    async loginOperator(state, payload) {
-        console.log("OPSLogin", payload);
-        await this.$axios.$post("api/ops/login", {
-                username: payload.username,
-                password: payload.password,
-                uid: payload.lineid
-            }, )
-            .then(res => {
-                if (res) {
-                    // localStorage.setItem("accessToken", res.message)
-                    state.commit("SET_ACCESSOPS", true)
-                }
-            }).catch(error => {
-                console.log(error);
-                alert("Username or password Incorrect")
-            })
+    loginOperator(state, payload) {
+        return new Promise(async(resolve, reject) => {
+           await this.$axios.$post("api/ops/login", {
+            username: payload.username,
+            password: payload.password,
+            uid: payload.lineid
+          }, )
+          .then(res => {
+              if (res) {
+                  // localStorage.setItem("accessToken", res.message)
+                  state.commit("SET_ACCESSOPS", true)
+              }
+              resolve(res)
+          }).catch(error => {
+              reject(error)
+          })
+        });
     },
     setToken(state) {
         // const accessToken = localStorage.getItem('accessToken');
