@@ -61,7 +61,7 @@ export default {
         base: '/qr/'
     },
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
-    axios: { baseURL: 'https://9891-27-55-81-2.ngrok.io' },
+    axios: { baseURL: 'https://1117-125-25-17-50.ngrok.io' },
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {

@@ -124,28 +124,30 @@ export default {
     // Status symbol
 
     fomatStatusToDetail(status_worksheet) {
-      // console.log("Last Index", lastindex);
-      // console.log("Status", status);
-      const index = status_worksheet.length - 1;
-      console.log(status_worksheet[index].status);
-      const status = status_worksheet[index].status;
+      const index = 0;
+      if (status_worksheet.length > 1) {
+        index = status_worksheet.length - 1;
+        console.log(status_worksheet[index].status);
+        const status = status_worksheet[index].status;
 
-      if (status == "รอดำเนิดการ") {
-        return {
-          detail: status,
-          text: "text-blue-500",
-        };
-      } else if (status == "กำลังดำเนินการ") {
-        return {
-          detail: status,
-          text: "text-yellow-500",
-        };
-      } else {
-        return {
-          detail: "เกิดข้อผิดพลาด",
-          text: "text-yellow-500",
-        };
+        if (status == "รอดำเนิดการ") {
+          return {
+            detail: status,
+            text: "text-blue-500",
+          };
+        } else if (status == "กำลังดำเนินการ") {
+          return {
+            detail: status,
+            text: "text-yellow-500",
+          };
+        } else {
+          return {
+            detail: "เกิดข้อผิดพลาด",
+            text: "text-yellow-500",
+          };
+        }
       }
+
     },
   },
 };
