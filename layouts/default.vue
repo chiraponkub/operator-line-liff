@@ -17,7 +17,7 @@ export default {
   },
   beforeCreate() {
     liff.init(
-      { liffId: "1656385614-yJlJEKNL" },
+      { liffId: "1656385614-YE6rXz2M" },
       () => {
         if (liff.isLoggedIn()) {
           liff

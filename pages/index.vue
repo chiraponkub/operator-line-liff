@@ -47,7 +47,6 @@ export default {
   watch: {
     async getUid(data) {
       this.lineid = data;
-      await this.getaccountOps();
       // console.log("this.lineid1", this.lineid);
     },
     gatdataJson(data) {
@@ -56,7 +55,33 @@ export default {
   },
 
   async created() {
+    await liff.init(
+      { liffId: "1656385614-YE6rXz2M" },
+      () => {
+        if (liff.isLoggedIn()) {
+          liff
+            .getProfile()
+            .then((profile) => {
+              this.userId = profile.userId;
+              this.displayName = profile.displayName;
+              this.statusMessage = profile.statusMessage;
+              this.pictureUrl = profile.pictureUrl;
+              this.email = liff.getDecodedIDToken().email;
+              this.$store.dispatch(
+                "account_operator/getAccountlineId",
+                profile.userId
+              );
+            })
+            .catch((err) => console.error(err));
+        } else {
+          liff.login();
+        }
+      },
+      (err) => console.error(err.code, error.message)
+    );
+
     await this.viewdataqrcode();
+    this.lineid = this.getUid;
   },
 
   methods: {
@@ -85,6 +110,7 @@ export default {
     },
 
     async getaccountOps() {
+      console.log("11 kub");
       await this.$store.dispatch("account_operator/getAccountOps", {
         // lindeid: this.getUid,
         lindeid: this.lineid,
@@ -93,6 +119,7 @@ export default {
     },
 
     async viewdataqrcode() {
+
       // console.log(this.$route); //ดู route
       let qr_id = 0;
       // const queryQR = `${this.$route.query["liff.state"]}`;
@@ -100,6 +127,7 @@ export default {
       // const params = Object.fromEntries(qrID.entries());
       // qr_id = params.qr_id;
       qr_id = this.$route.query.qr_id;
+
       console.log("qr_id", qr_id);
 
       // this.$store.dispatch("account_operator/getQrCodeId", qr_id);
@@ -107,24 +135,29 @@ export default {
       await this.$store
         .dispatch("account_operator/getDataQrCodeJson", qr_id)
         .then((result) => {
-          console.log("result", result);
           this.data_info = result.info;
           this.template_name = result.template_name;
           this.qr_code_id = result.qr_code_id;
           this.code_name = result.code_name;
-          // console.log("this.qr_code_id", this.qr_code_id);
-
           if (this.template_name === "") {
-            console.log("template : ", this.template_name);
-            this.$router.push(`/insertdata/${this.qr_code_id}`);
+            console.log("Comming route", `${qr_id}`);
 
+            // this.$router.push(`/insertdata/${qr_id}`);
+            this.$router.push(`/insertdata/${qr_id}`);
             if (this.gataccountops == "") {
               // viewer error
               this.$router.push("/errorpage");
             }
+          }else{
+             this.getaccountOps();
+          }
+
+          if (this.template_name != "" && this.info != ''){
+            this.getaccountOps();
           }
         })
         .catch((err) => {
+          console.log("error Kub", err);
           const position = "top-center";
           const color = "danger";
           const duration = 6000;
@@ -137,6 +170,11 @@ export default {
             text: err,
           });
         });
+      // const loading = this.$vs.loading();
+      // setTimeout(() => {
+      //   loading.close();
+      //   // this.getaccountOps();
+      // }, 5000);
     },
   },
 };

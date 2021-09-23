@@ -9,7 +9,7 @@ export default {
 
 
     head: {
-        title: 'CustomerLineLiff',
+        title: 'Qr-Code',
         htmlAttrs: {
             lang: 'en'
         },

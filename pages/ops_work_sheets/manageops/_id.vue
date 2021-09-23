@@ -175,6 +175,31 @@ export default {
   },
 
   mounted() {
+    liff.init(
+      { liffId: "1656385614-yJlJEKNL" },
+      () => {
+        if (liff.isLoggedIn()) {
+          liff
+            .getProfile()
+            .then((profile) => {
+              this.userId = profile.userId;
+              this.displayName = profile.displayName;
+              this.statusMessage = profile.statusMessage;
+              this.pictureUrl = profile.pictureUrl;
+              this.email = liff.getDecodedIDToken().email;
+              this.$store.dispatch(
+                "account_operator/getAccountlineId",
+                profile.userId
+              );
+            })
+            .catch((err) => console.error(err));
+        } else {
+          liff.login();
+        }
+      },
+      (err) => console.error(err.code, error.message)
+    );
+
     this.lineid = this.getUid;
     if (this.getUid) {
       this.reportByid();

@@ -98,14 +98,39 @@ export default {
 
   watch: {
     async getUid(data) {
-      console.log("data",data);
+      console.log("data", data);
       this.lineid = data;
       await this.getreport();
     },
   },
 
   mounted() {
-    this.lineid = this.getUid
+    liff.init(
+      { liffId: "1656385614-yJlJEKNL" },
+      () => {
+        if (liff.isLoggedIn()) {
+          liff
+            .getProfile()
+            .then((profile) => {
+              this.userId = profile.userId;
+              this.displayName = profile.displayName;
+              this.statusMessage = profile.statusMessage;
+              this.pictureUrl = profile.pictureUrl;
+              this.email = liff.getDecodedIDToken().email;
+              this.$store.dispatch(
+                "account_operator/getAccountlineId",
+                profile.userId
+              );
+            })
+            .catch((err) => console.error(err));
+        } else {
+          liff.login();
+        }
+      },
+      (err) => console.error(err.code, error.message)
+    );
+
+    this.lineid = this.getUid;
     if (this.getUid) {
       this.getreport();
     }
@@ -142,10 +167,15 @@ export default {
           detail: status,
           text: "text-yellow-500",
         };
-      } else {
+      } else if (status == "ดำเนินการเสร็จสิ้น") {
         return {
-          detail: "เกิดข้อผิดพลาด",
-          text: "text-yellow-500",
+          detail: status,
+          text: "text-green-500",
+        }
+        } else {
+        return {
+          detail: "รายการถูกยกเลิก",
+          text: "text-red-500",
         };
       }
     },

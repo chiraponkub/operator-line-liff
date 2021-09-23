@@ -79,19 +79,18 @@ export const actions = {
 
     getAccountOps(state, payload) {
         console.log("line", payload);
-        // state.commit("SET_UID", payload.lindeid)
+        state.commit("SET_UID", payload.lindeid)
         this.$axios.$get(`/api/ops/getAccount/${payload.lindeid}`).then(res => {
             console.log("RES", res);
             if (res == "") {
                 console.log("Viewer");
                 this.$router.push(`/viewer/equipment_v/${payload.qr_id}`); /// Viewver
-            } else if (res != '') {
+            }
+            if (res != '')  {
                 console.log("Index");
-                this.$router.push(`/?liff.state=%3Fqr_id%3D${payload.qr_id}`); /// Ops
+                // this.$router.push(`/?liff.state=%3Fqr_id%3D${payload.qr_id}`); /// Ops
+                this.$router.push(`/?qr_id=${payload.qr_id}`); /// Ops
                 // this.$router.push(`/mainmenu/${payload.qr_id}`); /// Ops
-            } else {
-                console.log("Login");
-                this.$router.push("/login");
             }
             state.commit("SET_ACCOUNTOPS", res)
         }).catch((error) => {

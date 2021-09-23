@@ -120,7 +120,38 @@ export default {
     },
   },
 
-  created() {},
+  created() {
+    liff.init(
+      { liffId: "1656385614-lv5MKNZj" },
+      () => {
+        if (liff.isLoggedIn()) {
+          liff
+            .getProfile()
+            .then((profile) => {
+              this.userId = profile.userId;
+              this.displayName = profile.displayName;
+              this.statusMessage = profile.statusMessage;
+              this.pictureUrl = profile.pictureUrl;
+              this.email = liff.getDecodedIDToken().email;
+              this.$store.dispatch(
+                "account_operator/getAccountlineId",
+                profile.userId
+              );
+            })
+            .catch((err) => console.error(err));
+        } else {
+          liff.login();
+        }
+      },
+      (err) => console.error(err.code, error.message)
+    );
+
+    this.lineid = this.getUid;
+    if (this.getUid) {
+      this.getreport();
+    }
+    ƒ;
+  },
 
   methods: {
     async login() {
@@ -137,8 +168,9 @@ export default {
         .then(() => {
           alert("Login Success");
           liff.closeWindow();
-        }).catch((err)=>{
-          alert(err.message)
+        })
+        .catch((err) => {
+          alert(err.message);
         });
       // this.$router.push("/");
     },

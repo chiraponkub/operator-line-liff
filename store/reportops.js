@@ -116,7 +116,7 @@ export const actions = {
     },
 
     getDataUpdateFormApi(state, payload) {
-        this.$axios.$get(`api/ops/getDataUpdate/9473c2a1-ae0b-4d17-9d24-0c24fe83498d`)
+        this.$axios.$get(`api/ops/getDataUpdate/${payload}`)
             .then((res) => {
                 state.commit('GET_DATAUPDATE', res)
             })

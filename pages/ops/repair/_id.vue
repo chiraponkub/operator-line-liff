@@ -28,6 +28,7 @@
           </div>
         </nav>
 
+
         <div class="p-4">
           <div class="grid lg:grid-cols-3 grid-cols-1 gap-5 p-2">
             <!-- Information -->
@@ -162,7 +163,7 @@
 export default {
   data: () => ({
     getterallqrcode: [],
-    lineid: "demo3",
+    lineid: "",
     insertdata: {},
     showModal: false,
     textdelete: false,
@@ -204,6 +205,9 @@ export default {
     },
     gatQrId() {
       return this.$store.getters["account_operator/gettersQRcodeId"];
+    },
+    getUid() {
+      return this.$store.getters["account_operator/gettersUId"];
     },
   },
 
@@ -254,11 +258,21 @@ export default {
         this.openNotification();
       }
     },
+
+     async getUid(data) {
+      this.lineid = data;
+      await this.confirmjobOps();
+    },
   },
 
   async created() {
     await this.viewdataqrcode();
     await this.getDataupdate();
+
+    this.lineid = this.getUid;
+    if (this.getUid) {
+      this.confirmjobOps()
+    }
   },
 
   methods: {
@@ -388,7 +402,10 @@ export default {
     },
 
     async getDataupdate() {
-      await this.$store.dispatch("reportops/getDataUpdateFormApi");
+      await this.$store.dispatch(
+        "reportops/getDataUpdateFormApi",
+        this.$route.params.id
+      );
     },
 
     openNotification(position = "top-center", color = "warn", duration = 6000) {

@@ -457,9 +457,9 @@
           rounded-b
         "
       >
-        <vs-button danger border type="button" @click="backtohome()">
+        <!-- <vs-button danger border type="button" @click="backtohome()">
           Close
-        </vs-button>
+        </vs-button> -->
         <vs-button border @click="insertDataOps(dataQrById)">
           Save Changes
         </vs-button>
@@ -476,7 +476,7 @@ export default {
     showModal: false,
     showModalInsert: false,
 
-    lineid: "demo3",
+    lineid: "",
 
     update: {
       id: "",
@@ -507,77 +507,62 @@ export default {
     showgetdata() {
       return this.$store.getters["generate_qr/gettersGetDATABYID"];
     },
+    getUid() {
+      return this.$store.getters["account_operator/gettersUId"];
+    },
   },
 
   async created() {
+    console.log("Hello Kub &&&");
     await this.getTemplate();
     await this.viewdataqrcode();
   },
 
-  methods: {
-    backtohome() {
-      const loading = this.$vs.loading();
-      setTimeout(() => {
-        loading.close();
-        this.$router.push({
-          path: "/",
-          query: { qr_id: this.$route.params.id },
-        });
-      }, 1000);
+  watch: {
+    async getUid(data) {
+      this.lineid = data;
+      console.log("this.lineid", this.lineid);
+      await this.insertDataOps();
     },
+  },
 
+  methods: {
     async getTemplate() {
-      await this.$store.dispatch("generate_qr/getTemplateFromApi").then(() => {
-        this.templatels = this.$store.getters["generate_qr/gettersTemplates"];
-      });
+      await this.$store.dispatch("generate_qr/getTemplateFromApi");
     },
 
     async viewdataqrcode() {
       var id = this.$route.params.id;
+      console.log("id : ",id);
       await this.$store.dispatch(`generate_qr/getDataQrCodeJson`, id);
     },
 
-    // async insertDataOps(datainsert) {
-    //   console.log("template_name", this.showgetdata.qr_code_id);
-    //   await this.$store.dispatch("generate_qr/insertDataQrCodeFormApi", {
-    //     data: datainsert.info,
-    //     lineid: this.lineid,
-    //     templatename: datainsert.template_name,
-    //     qrcodeid: this.showgetdata.qr_code_id,
-    //     ownerids: this.showgetdata.owner_id,
-    //   });
-    //   console.log("ID : ", this.showgetdata.qr_code_id);
-    //   const loading = this.$vs.loading();
-    //   setTimeout(() => {
-    //     loading.close();
-    //     this.$router.push(
-    //       `/?liff.state=%3Fqr_id%3D${this.showgetdata.qr_code_id}`
-    //     );
-    //   }, 1000);
-    // },
-
     async insertDataOps(datainsert) {
+      console.log("Hello Kub");
       console.log("template_name", this.showgetdata.qr_code_id);
+      console.log("line : ",this.getUid);
       await this.$store.dispatch("generate_qr/insertDataQrCodeFormApi", {
         data: datainsert.info,
-        lineid: this.lineid,
+        lineid: this.getUid,
         templatename: datainsert.template_name,
         qrcodeid: this.showgetdata.qr_code_id,
         ownerids: this.showgetdata.owner_id,
       });
       console.log("ID : ", this.showgetdata.qr_code_id);
-      
       const loading = this.$vs.loading();
       setTimeout(() => {
         loading.close();
-        this.$router.push({
-          path: "/",
-          query: { qr_id: this.$route.params.id },
-        });
+        console.log("Hello001 ", this.showgetdata.qr_code_id);
+        this.$router.push(`/?qr_id=${this.showgetdata.qr_code_id}`);
+
+        // this.$router.push({
+        //   path: "/",
+        //   query: { qr_id: this.$route.params.id },
+        // });
         // this.$router.push(
         //   `/?liff.state=%3Fqr_id%3D${this.showgetdata.qr_code_id}`
         // );
-      }, 1000);
+      }, 5000);
     },
   },
 };

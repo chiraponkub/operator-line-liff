@@ -445,6 +445,11 @@ export default {
 
   async created() {
     await this.getdatajson();
+    
+    this.lineid = this.getUid;
+    if (this.getUid) {
+      this.getreport();
+    }
   },
 
   methods: {
